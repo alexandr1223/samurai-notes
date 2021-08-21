@@ -3,17 +3,15 @@ import {useSelector} from 'react-redux'
 
 function Board() {
     const boardItem = useSelector(({boards}) => boards.boardItem)
-    const currentIndex = useSelector(({current}) => current)
-    console.log(boardItem);
-    console.log(currentIndex)
+    const currentIndex = useSelector(({currentBoard}) => currentBoard.current)
+    
+    const currentItem = boardItem[currentIndex];
     
     return (
         <div className="board">
             <h1 className="board__title">
                 {
-                    boardItem.map((item,index) => (
-                        item.title
-                    ))
+                    currentItem.title
                 }
             </h1>
         </div>

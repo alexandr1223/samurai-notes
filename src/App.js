@@ -2,7 +2,8 @@ import './css/style.css';
 import React from 'react';
 import {Sidebar} from './pages';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import {Home, Settings, Board} from './pages';
+import {Home, Settings} from './pages';
+import Board from './pages/Board';
 import { useDispatch} from 'react-redux';
 import { createBoard } from './redux/action/createBoard';
 
