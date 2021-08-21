@@ -14,7 +14,11 @@ function Sidebar({createElement}) {
     }
 
     const createBoard = (element) => {
-        createElement(element);
+        let id = 0;
+        board.map((item, index) => {
+            id = index+1;
+        })
+        createElement(element, id);
         document.querySelector('.create-board__input').value = '';
         setOpenCreateBlock(false);
     }

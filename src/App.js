@@ -11,8 +11,8 @@ function App() {
 
     const dispatch = useDispatch();
 
-	const setNewBoard = (item) => {
-		dispatch(createBoard(item))
+	const setNewBoard = (item, id) => {
+		dispatch(createBoard(item, id))
 	}
 	
   	return (

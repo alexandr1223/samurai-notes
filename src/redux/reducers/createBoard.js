@@ -1,17 +1,49 @@
 const initialState = {
     boardItem: [
         {
-            title: '1'
+            id: 0,
+            title: '1',
+            list: {
+                listTitle: '',
+                listItem: [
+                    {
+                        card: ''
+                    }
+                ]
+            }
         }
     ]
 }
 
 const boards = (state = initialState, action) => {
+   
     switch(action.type) {
         case 'CREATE_BOARD': {
             return {
                 ...state,
                 boardItem: [...state.boardItem, action.payload.new]
+            }
+        }
+        case 'CREATE_LIST': {
+            
+            return {
+                ...state,
+                boardItem: state.boardItem.map((item, index) => {
+                    if (item.id == action.payload.id) {
+                        return {
+                            ...item,
+                            list: [
+                                {
+                                    listItem: {
+                                        listTitle: action.payload.listTitle,
+                                        card: ''
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                    return item
+                })
             }
         }
         default:
