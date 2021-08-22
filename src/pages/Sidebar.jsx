@@ -41,7 +41,7 @@ function Sidebar({createElement}) {
                 <div className="sidebar-board-list">
                     {
                         board.map((item, index) => (
-                            <Link to="/board" className="sidebar-board-item" onClick={() => {openBoard(index)}} key={index}>
+                            <Link to={`/board/${item.id}`} className="sidebar-board-item" onClick={() => {openBoard(index)}} key={index}>
                                 {item.title}
                             </Link>
                         ))

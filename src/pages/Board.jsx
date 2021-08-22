@@ -1,25 +1,25 @@
-import React, {useState} from 'react'
+import React from 'react'
 import {useSelector, useDispatch} from 'react-redux'
+import { useParams } from 'react-router';
 import { createList } from '../redux/action/createBoard';
 
 function Board() {
+    let {id} = useParams();
+    console.log(id)
     const dispatch = useDispatch();
     const boardItem = useSelector(({boards}) => boards.boardItem)
     const currentIndex = useSelector(({currentBoard}) => currentBoard.current)
-    const [openCreateList, setOpenCreateList] = useState(false);
     
     const currentItem = boardItem[currentIndex];
 
-    const openListCreation = () => {
-        setOpenCreateList(true)
-    }
-    
-    const listCreateon = (value, index) => {
+    const listCreateon = (value) => {
         console.log()
         dispatch(createList(value, boardItem[currentIndex].id))
-        setOpenCreateList(false);
+        // setOpenCreateList(false);        
     }
 
+
+    console.log(currentItem.list);
     return (
         <div className="board">
             <h1 className="board__title">
@@ -28,14 +28,21 @@ function Board() {
                 }
             </h1>
             <h2 className="board__subtitle">
-                Click <span>+ New</span> to create new list.
+                Click <span>+ New list</span> to create new list.
             </h2>
             <div className="board-list">
-                <div className="board__create" onClick={() => openListCreation()}>
-                    New
-                </div>
+                {
+                    currentItem.list.map((item, index) => (
+                        <div className="board-list__item" key={index}>
+                            <input type="text" className="board-list__title" value={item.listTitle} onChange={(e) => {listCreateon(e.target.value)}}  />
+                            <div className="board-list__createCard">
+                                +
+                            </div>
+                        </div>
+                    ))
+                }
             </div>
-            <div className={openCreateList === true ? 'create-board__active' : 'create-board'}>
+            {/* <div>
                 <label className="create-item__label">
                     Текст карточки
                 </label>
@@ -44,7 +51,7 @@ function Board() {
                     Create
                 </div>
                 
-            </div>
+            </div> */}
         </div>
     )
 }

@@ -4,14 +4,16 @@ export const createBoard = (boardItem, index) => ({
         new: {
             id: index,
             title: boardItem,
-            list: {
-                listItem: [
-                    {
-                        listTitle: '',
-                        card: ''
-                    }
-                ],
-            }
+            list: [
+                {
+                    listTitle: '',
+                    listItem: [
+                        {
+                            card: ''
+                        }
+                    ],
+                }
+            ]
         }
     }
 })

@@ -22,7 +22,7 @@ function App() {
 				<Switch>
 					<Route path="/" component={Home} exact/>
 					<Route path="/settings" component={Settings} exact/>
-					<Route path="/board" component={Board} exact/>
+					<Route path="/board/:id" component={Board} exact/>
 				</Switch>
 			</BrowserRouter>
 		</div>
