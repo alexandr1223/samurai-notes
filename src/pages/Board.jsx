@@ -1,15 +1,14 @@
-import React from 'react'
+import React, {useState} from 'react'
 import {useSelector, useDispatch} from 'react-redux'
-import { useParams } from 'react-router';
-import { createList } from '../redux/action/createBoard';
+import { createList, createCard } from '../redux/action/createBoard';
 
 function Board() {
-    let {id} = useParams();
-    console.log(id)
     const dispatch = useDispatch();
-    const boardItem = useSelector(({boards}) => boards.boardItem)
-    const currentIndex = useSelector(({currentBoard}) => currentBoard.current)
     
+    const boardItem = useSelector(({boards}) => boards.boardItem);
+    const currentIndex = useSelector(({currentBoard}) => currentBoard.current);
+    const [cardOpen, setCardOpen] = useState(false);
+    const [listOpen, setListOpen] = useState(0);
     const currentItem = boardItem[currentIndex];
 
     const listCreateon = (value) => {
@@ -18,8 +17,18 @@ function Board() {
         // setOpenCreateList(false);        
     }
 
+    const createCardOpen = (value) => {
+        setCardOpen(value);
 
-    console.log(currentItem.list);
+    }    
+    let input = React.createRef();
+
+    const createCardSender = (index) => {
+        let value = input.value;
+        dispatch(createCard(value, index))
+    }
+
+    console.log(cardOpen)
     return (
         <div className="board">
             <h1 className="board__title">
@@ -35,7 +44,13 @@ function Board() {
                     currentItem.list.map((item, index) => (
                         <div className="board-list__item" key={index}>
                             <input type="text" className="board-list__title" value={item.listTitle} onChange={(e) => {listCreateon(e.target.value)}}  />
-                            <div className="board-list__createCard">
+                            <div className={cardOpen === true ? 'board-list__cardCreate board-list__cardCreate--active' : 'board-list__cardCreate'}>
+                                <input type="text" className="board-list__input" ref={ref => input = ref} />
+                                <div className="board-list__cardBtn" onClick={() => createCardSender(index)}>
+                                    Создать
+                                </div>
+                            </div>
+                            <div className="board-list__createCard" onClick={() => {createCardOpen(true)}}>
                                 +
                             </div>
                         </div>

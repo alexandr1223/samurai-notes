@@ -9,10 +9,10 @@ export const createBoard = (boardItem, index) => ({
                     listTitle: '',
                     listItem: [
                         {
-                            card: ''
+                            cardName: ''
                         }
                     ],
-                }
+                },
             ]
         }
     }
@@ -23,5 +23,14 @@ export const createList = (newListTitle, index) => ({
     payload: {
         id: index,
         listTitle: newListTitle,
+    }
+})
+
+export const createCard = (cardName, listId, index) => ({
+    type: 'CREATE_CARD',
+    payload: {
+        id: index,
+        listId: listId,
+        cardName: cardName,
     }
 })

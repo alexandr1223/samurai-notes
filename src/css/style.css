@@ -160,6 +160,38 @@ body{
     cursor: pointer;
     font-size: 24px;
 }
+.board-list__cardCreate{
+    display: flex;
+    margin-top: 15px;
+    flex-direction: column;
+    background: rgba(0, 0, 0, .05);
+    border-radius: 6px;
+    padding: 20px;
+    display: none;
+}
+.board-list__cardCreate--active{
+    display: block;
+}
+.board-list__input{
+    width: 100%;
+    font-size: 16px;
+    padding: 9px 20px;
+    border-radius: 6px;
+    border: 1px solid #fff;
+    margin-bottom: 10px;
+}
+.board-list__cardBtn{
+    width: 100%;
+    text-decoration: none;
+    color: #fff;
+    background: #2D4ACD;
+    border-radius: 10px;
+    font-family: sans-serif;
+    font-weight: 300;
+    padding: 14px 4px;
+    text-align: center;
+    cursor: pointer;
+}
 
 .create-item{
     position: absolute;
