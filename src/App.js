@@ -2,8 +2,8 @@ import './css/style.css';
 import React from 'react';
 import {Sidebar} from './pages';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import {Home, Settings} from './pages';
-import Board from './pages/Board';
+import {Notes, Settings, financePortfolio} from './pages';
+import Board from './pages/board/Board';
 import { useDispatch} from 'react-redux';
 import { createBoard } from './redux/action/createBoard';
 
@@ -18,10 +18,11 @@ function App() {
   	return (
 		<div className="wrapper">
 			<BrowserRouter>
-				<Sidebar createElement={setNewBoard} />
+				<Sidebar/>
 				<Switch>
-					<Route path="/" component={Home} exact/>
+					<Route path="/notes" render={props => <Notes createElement={setNewBoard} />} exact/>
 					<Route path="/settings" component={Settings} exact/>
+					<Route path="/financePortfolio" component={financePortfolio} exact/>
 					<Route path="/board/:id" component={Board} exact/>
 				</Switch>
 			</BrowserRouter>

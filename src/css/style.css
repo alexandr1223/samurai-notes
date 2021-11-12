@@ -1,19 +1,23 @@
 body{
     padding: 0;
     margin: 0;
+    font-family: sans-serif;
 }
 *{
     box-sizing: border-box;
 }
 .wrapper {
     display: flex;
+    overflow: hidden;
+    background: #F2F2F2;
 }
 .sidebar{
-    width: 260px;
-    background: #F3F5F7;
+    min-width: 280px;
+    max-width: 280px;
+    background: linear-gradient(#341CBF, #5644BE);
     height: 100vh;
     margin-right: 50px;
-    padding: 20px;
+    padding: 20px 0;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -22,20 +26,28 @@ body{
     list-style: none;
 }
 .sidebar ul li a{
-    font-size: 24px;
+    font-size: 18px;
+    padding: 20px;
+    display: block;
     text-decoration: none;
-    color: #000;
+    color: #fff;
     text-transform: uppercase;
     font-family: sans-serif;
+    line-height: 140%;
     font-weight: 600;
 }
-.sidebar ul li:not(:last-child){
-    margin-bottom: 30px;
+.sidebar__active{
+    background: #fff;
+    color: #000 !important
+}
+.sidebar__active a{
+    color: #000 !important;
 }
 .sidebarMenu{
     padding-left: 0;
+    margin: 0;
 }
-.createBoard {
+.createBoard__button {
     font-size: 18px;
     text-decoration: none;
     color: #fff;
@@ -43,9 +55,14 @@ body{
     border-radius: 10px;
     font-family: sans-serif;
     font-weight: 300;
-    padding: 18px 4px;
+    padding: 16px 4px;
     text-align: center;
     cursor: pointer;
+    width: 200px;
+    height: max-content;
+    position: absolute;
+    right: 30px;
+    bottom: 30px;
 }
 .create-board{
     position: absolute;
@@ -81,12 +98,23 @@ body{
     display: block;
     margin-bottom: 20px;
 }
+.create-board__error{
+    color: red;
+    font-size: 14px;
+    margin-bottom: 6px;
+    font-family: sans-serif;
+    display: none;
+}
+.create-board__error--active{
+    display: block;
+}
 .create-board__input{
-    width: 240px;
-    padding: 8px 14px;
+    width: 100%;
+    padding: 10px 14px;
     display: block;
     margin: 0 auto;
     margin-bottom: 20px;
+    font-size: 16px;
     border-radius: 6px;
 }
 .create-board__btn{
@@ -104,27 +132,82 @@ body{
     cursor: pointer;
     margin: 0 auto;
 }
-.sidebar-board-list{
-    display: flex;
-    flex-direction: column;
-    margin-top: 100px;
-}
-.sidebar-board-item{
-    background: #fff;
-    border-radius: 6px;
-    padding: 16px 20px;
-    font-size: 18px;
-    cursor: pointer;
-}
 .sidebar-board-item:not(:last-child){
     margin-bottom: 14px;
 }
+
+.notes{
+    display: flex;
+    flex-direction: column;
+    padding-top: 20px;
+    width: calc(100% - 340px);
+    padding-right: 40px;
+    position: relative;
+}
+.notes__list{
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    grid-gap: 20px
+}
+.notes__title{
+    font-size: 30px;
+    font-family: sans-serif;
+    margin-bottom: 30px;
+}
+.notes__item{
+    background: rgba(0, 0, 0, .4);
+    border-radius: 6px;
+    padding: 16px 20px;
+    font-size: 18px;
+    width: 200px;
+    height: 160px;
+    display: block;
+    position: relative;
+}
+.notes__item a{
+    color: #fff;
+}
+.notes__item:hover > .board-list__delete-board{
+    opacity: 1;
+}
+.board-list__delete-board{
+    position: absolute;
+    right: 10px;
+    top: 15px;
+    background: #fff;
+    border: 1px solid #000;
+    width: 25px;
+    height: 25px;
+    border-radius: 6px;
+    opacity: 0;
+    transition: .3s;
+    z-index: 1;
+    cursor: pointer;
+}
+.board-list__delete-board:hover{
+    opacity: 1;
+}
+.board-list__delete-board img{
+    width: 16px;
+    height: auto;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    fill: #fff
+}
+
+.board{
+    width: 100%;
+    position: relative;
+}
 .board__title{
-    font-size: 48px;
+    font-size: 36px;
 }
 .board__subtitle{
     font-family: sans-serif;
     color: rgba(0, 0, 0, .5);
+    font-size: 18px;
 }
 .board__subtitle span {
     color: #2D4ACB;
@@ -136,19 +219,66 @@ body{
 }
 .board-list{
     margin-top: 40px;
-    display: grid;
-    grid-template-columns: 300px 300px 300px;
-    grid-gap: 20px
+    display: flex;
+    grid-gap: 20px;
+    width: calc(100% - 340px);
+    padding-right: 40px;
+}
+.board-list__item{
+    min-width: 280px;
+    position: relative;
+}
+.board-list__back a{
+    position: absolute;
+    left: 0;
+    bottom: 40px;
+    padding: 16px 20px;
+    background: rgba(0, 0, 0, .4);
+    color: #fff;
+    font-family: sans-serif;
+    border-radius: 6px;
+    cursor: pointer;
+    color: #fff;
+    text-decoration: none;
 }
 .board-list__title{
     border-radius: 5px;
-    padding: 14px 16px;
-    background: #F2F4F5;
+    padding: 16px 16px;
+    background: rgba(0, 0, 0, .04);
     font-size: 18px;
     font-family: sans-serif;
-    cursor: pointer;
+    cursor: text;
     border: none;
     width: 100%;
+}
+.board-list__title:hover + .board-list__delete-list{
+    opacity: 1;
+}
+.board-list__delete-list{
+    position: absolute;
+    right: 10px;
+    top: 15px;
+    background: #fff;
+    border: 1px solid #000;
+    width: 25px;
+    height: 25px;
+    border-radius: 6px;
+    opacity: 0;
+    transition: .3s;
+    z-index: 1;
+    cursor: pointer;
+}
+.board-list__delete-list:hover{
+    opacity: 1;
+}
+.board-list__delete-list img{
+    width: 16px;
+    height: auto;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    fill: #fff
 }
 .board-list__createCard{
     background: transparent;
@@ -175,23 +305,120 @@ body{
 .board-list__input{
     width: 100%;
     font-size: 16px;
-    padding: 9px 20px;
+    padding: 8px 16px;
     border-radius: 6px;
     border: 1px solid #fff;
     margin-bottom: 10px;
+}
+.board-list__card:hover .board-list__delete-card{
+    opacity: 1;
+}
+.board-list__delete-card{
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: #fff;
+    border: 1px solid #000;
+    width: 25px;
+    height: 25px;
+    border-radius: 6px;
+    opacity: 0;
+    transition: .3s;
+    z-index: 1;
+    cursor: pointer;
+}
+.board-list__delete-card img{
+    width: 16px;
+    height: auto;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    fill: #fff
+}
+.board-list__delete-card--active{
+    opacity: 1;
+    cursor: pointer;
 }
 .board-list__cardBtn{
     width: 100%;
     text-decoration: none;
     color: #fff;
     background: #2D4ACD;
+    font-size: 14px;
     border-radius: 10px;
     font-family: sans-serif;
     font-weight: 300;
-    padding: 14px 4px;
+    padding: 10px 45px;
     text-align: center;
     cursor: pointer;
 }
+.board-list__card{
+    padding: 10px 20px;
+    border: 1px solid rgba(0, 0, 0, .4);
+    border-radius: 10px;
+    font-size: 16px;
+    position: relative;
+}
+.board-list__card:not(:last-child){
+    margin-bottom: 15px;
+}
+.board-list__card:not(:first-child){
+    margin-top: 15px;
+}
+.board-list__createList{
+    border-radius: 5px;
+    background: rgba(0, 0, 0, .04);
+    font-size: 18px;
+    font-family: sans-serif;
+    border: none;
+    width: 100%;
+    height: max-content;
+    position: relative;
+    min-width: 280px;
+    max-width: 280px;
+}
+
+.board-list__createList span{
+    display: block;
+    font-size: 18px;
+    width: 100%;
+    padding: 16px;
+    cursor: pointer;
+}
+.create-list{
+    display: none;
+    flex-direction: column;
+    margin-top: 0px;
+    padding: 0 16px 20px 16px;
+}
+.create-list--active{
+    display: flex;
+}
+.create-list__input{
+    width: 100%;
+    font-size: 16px;
+    padding: 11px 20px;
+    border-radius: 6px;
+    border: 1px solid #fff;
+    margin-bottom: 10px;
+}
+.create-list__btn{
+    width: 100%;
+    text-decoration: none;
+    color: #fff;
+    background: #2D4ACD;
+    font-size: 14px;
+    border-radius: 10px;
+    font-family: sans-serif;
+    font-weight: 300;
+    padding: 10px 45px;
+    text-align: center;
+    cursor: pointer;
+    border: none;
+}
+
 
 .create-item{
     position: absolute;
@@ -250,3 +477,22 @@ body{
     cursor: pointer;
     margin: 0 auto;
 }
+
+
+
+
+.chart-circle{
+    margin: 0 auto;
+    width: 280px !important;
+    height: 280px !important;
+}
+.portfolio-transactions{
+    border-radius: 20px;
+    background: #fff;
+    padding: 20px;
+    width: 100%;
+    box-shadow: 1px 1px 10px 10px rgba(133, 98, 98, 0.03);
+    max-height: 600px;
+    height: 100%;
+}
+

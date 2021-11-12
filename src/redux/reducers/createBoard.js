@@ -7,18 +7,22 @@ const initialState = {
                 {
                     listId: 0,
                     listTitle: 'List 1',
+                    openCardCreation: false,
                     listItem: [
                         {
-                            cardName: ''
+                            cardId: 0,
+                            cardName: 'Complete all task'
                         }
                     ]
                 },
                 {
                     listId: 1,
                     listTitle: 'List 2',
+                    openCardCreation: false,
                     listItem: [
                         {
-                            cardName: ''
+                            cardId: 0,
+                            cardName: 'Change color'
                         }
                     ]
                 }
@@ -30,31 +34,29 @@ const initialState = {
 const boards = (state = initialState, action) => {
    
     switch(action.type) {
-        case 'CREATE_BOARD': {
+        case 'OPEN_CARD_CREATION': {
             return {
                 ...state,
-                boardItem: [...state.boardItem, action.payload.new]
-            }
-        }
-        case 'CREATE_LIST': {
-            return {
-                ...state,
-                boardItem: state.boardItem.map((item, index) => {
-                    if (item.id === action.payload.id) {
-                        console.log(item)
+                boardItem: state.boardItem.map((item) => {
+                    if (item.id === action.payload.boardIndex) {
                         return {
                             ...item,
-                            list: [
-                                {
-                                    listTitle: action.payload.listTitle,
-                                    listItem: {
-                                        cardName: ''
+                            list: item.list.map((listItem) => {
+                                if (listItem.listId === action.payload.listIndex) {
+                                    return {
+                                        ...listItem,
+                                        openCardCreation: action.payload.openCardCreation
+                                    }
+                                } else {
+                                    return {
+                                        ...listItem,
+                                        openCardCreation: false
                                     }
                                 }
-                            ]
+                            })
                         }
                     }
-                    return item
+                    return item;
                 })
             }
         }
@@ -62,25 +64,128 @@ const boards = (state = initialState, action) => {
             return {
                 ...state,
                 boardItem: state.boardItem.map((item, index) => {
-                    console.log()
-                    if (item) {
-                        console.log(item)
-                        item.list.map((list, listIndex) => {
-                            if (list.listId === action.payload.listId) {
-                                list.listItem.map((card, cardIndex) => {
-                                    // console.log(card)
-                                    // console.log(action.payload.cardName)
-                                    return {
-                                        ...list,
+                    if (item.id === action.payload.boardIndex) {
+                        return {
+                            ...item,
+                            list: item.list.map((listArray) => {
+                                
+                                if (listArray.listId === action.payload.listId) {
+                                    let cardId = listArray.listItem.map(list => {
+                                        return list.cardId
+                                    })
+                                    let newCardName = {
+                                        cardId: cardId.pop() + 1,
                                         cardName: action.payload.cardName
                                     }
-                                })
-                            }
-                            
-                        })
+                                    return {
+                                        ...listArray,
+                                        listItem: [...listArray.listItem, newCardName]
+                                    }
+                                }
+                                return listArray;
+                            })
+                        }
                     }
                     return item;
                 })
+            }
+        }
+        case 'CREATE_LIST': {
+            return {
+                ...state,
+                boardItem: state.boardItem.map((item) => {
+                    if (item.id === action.payload.id) {
+                        let newId = item.list.map(list => {
+                            return list.listId
+                        })
+                        if (newId.length === 0) {
+                            newId = [-1]
+                        }
+                        const newList = {
+                            listId: newId.pop() + 1,
+                            listTitle: action.payload.listTitle,
+                            openCardCreation: false,
+                            listItem: []
+                        }
+                        return {
+                            ...item,
+                            list: [...item.list, newList]
+                        }
+                    }
+                    return item
+                })
+            }
+        }
+        case 'CREATE_BOARD': {
+            return {
+                ...state,
+                boardItem: [...state.boardItem, action.payload.new]
+            }
+        }
+        case 'CHANGE_LIST_TITLE': {
+            return {
+                ...state,
+                boardItem: state.boardItem.map((item, index) => {
+                    if (item.id === action.payload.id) {
+                        return {
+                            ...item,
+                            list: item.list.map((listItem) => {
+                                if (listItem.listId === action.payload.listId) {
+                                    return {
+                                        ...listItem,
+                                        listTitle: action.payload.listTitle
+                                    }
+                                }
+                                return listItem;
+                            })
+                        }
+                    }
+                    return item;
+                })
+            }
+        }
+        case 'DELETE_CARD': {
+            return {
+                ...state,
+                boardItem: state.boardItem.map((item) => {
+                    if (item.id === action.payload.boardId) {
+                        return {
+                            ...item,
+                            list: item.list.map((listItem) => {
+                                if (listItem.listId === action.payload.listId) {
+                                    return {
+                                        ...listItem,
+                                        listItem: [...listItem.listItem.slice(0, action.payload.cardId), ...listItem.listItem.slice(action.payload.cardId + 1)]
+                                    }
+                                }
+                                return listItem
+                            })
+                        }
+                    }
+                    return item;
+                })
+            }
+        }
+        case 'DELETE_LIST': {
+            return {
+                ...state,
+                boardItem: state.boardItem.map((item) => {
+                    console.log(item.id)
+                    console.log(action.payload.boardId)
+                    if (item.id === action.payload.boardId) {
+                        return {
+                            ...item,
+                            list: [...item.list.slice(0, action.payload.listId), ...item.list.slice(action.payload.listId + 1)]
+                        }
+                    }
+                    return item;
+                })
+            }
+        }
+        case 'DELETE_BOARD': {
+            return {
+                ...state,
+                boardItem: [...state.boardItem.slice(0, action.payload.boardId), ...state.boardItem.slice(action.payload.boardId + 1)]
             }
         }
         default:

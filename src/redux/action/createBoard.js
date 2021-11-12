@@ -6,11 +6,10 @@ export const createBoard = (boardItem, index) => ({
             title: boardItem,
             list: [
                 {
-                    listTitle: '',
+                    listId: 0,
+                    listTitle: 'First title',
+                    openCardCreation: false,
                     listItem: [
-                        {
-                            cardName: ''
-                        }
                     ],
                 },
             ]
@@ -18,19 +17,61 @@ export const createBoard = (boardItem, index) => ({
     }
 })
 
-export const createList = (newListTitle, index) => ({
-    type: 'CREATE_LIST',
+export const openCardCreation = (value, listIndex, boardIndex) => ({
+    type: 'OPEN_CARD_CREATION',
     payload: {
-        id: index,
+        openCardCreation: value,
+        listIndex: listIndex,
+        boardIndex: boardIndex
+    }
+})
+
+export const changeListTitle = (newListTitle, listIndex, boardId) => ({
+    type: 'CHANGE_LIST_TITLE',
+    payload: {
+        id: boardId,
+        listId: listIndex,
         listTitle: newListTitle,
     }
 })
 
-export const createCard = (cardName, listId, index) => ({
+export const createList = (listTitle, boardId) => ({
+    type: 'CREATE_LIST',
+    payload: {
+        id: boardId,
+        listTitle: listTitle,
+    }
+})
+
+export const createCard = (cardName, listId, boardIndex) => ({
     type: 'CREATE_CARD',
     payload: {
-        id: index,
         listId: listId,
         cardName: cardName,
+        boardIndex: boardIndex
+    }
+})
+
+export const cardDelete = (boardId, listId, cardId) => ({
+    type: 'DELETE_CARD',
+    payload: {
+        listId: listId,
+        cardId: cardId,
+        boardId: boardId
+    }
+})
+
+export const listDelete = (boardId, listId) => ({
+    type: 'DELETE_LIST',
+    payload: {
+        listId: listId,
+        boardId: boardId
+    }
+})
+
+export const boardDelete = (boardId) => ({
+    type: 'DELETE_BOARD',
+    payload: {
+        boardId: boardId
     }
 })

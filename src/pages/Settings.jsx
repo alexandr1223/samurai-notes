@@ -3,7 +3,7 @@ import React from 'react'
 function Settings() {
     return (
         <div>
-            <h1>settings</h1>
+            <h1>Настройки</h1>
         </div>
     )
 }

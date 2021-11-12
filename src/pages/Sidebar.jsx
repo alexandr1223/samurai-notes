@@ -1,65 +1,28 @@
-import React, {useState} from 'react'
-import { Link } from 'react-router-dom'
-import {useSelector, useDispatch} from 'react-redux'
-import { currentBoard } from '../redux/action/currentBoard';
+import React from 'react'
+import { NavLink } from 'react-router-dom'
 
-function Sidebar({createElement}) {
-
-    const dispatch = useDispatch();
-    const board = useSelector(({boards}) => boards.boardItem)
-    const [openCreateBlock, setOpenCreateBlock] = useState(false);
-
-    const openBlock = (value) => {
-        setOpenCreateBlock(value);
-    }
-
-    const createBoard = (element) => {
-        let id = 0;
-        board.map((item, index) => {
-            id = index+1;
-        })
-        createElement(element, id);
-        document.querySelector('.create-board__input').value = '';
-        setOpenCreateBlock(false);
-    }
-
-    const openBoard = (index) => {
-        dispatch(currentBoard(index));
-    }
+function Sidebar() {
 
     return (
         <div className="sidebar">
             <div className="sidebar__top">
                 <ul className="sidebarMenu">
                     <li>
-                        <Link to="/">Home</Link>
+                        <NavLink to="/home" activeClassName="sidebar__active">Главная</NavLink>
+                    </li>
+                    <li >
+                        <NavLink to="/notes" activeClassName="sidebar__active">Заметки</NavLink>
                     </li>
                     <li>
-                        <Link to="/settings">Settings</Link>
+                        <NavLink to="/financePortfolio" activeClassName="sidebar__active">Финансовый портфель</NavLink>
+                    </li>
+                    <li>
+                        <NavLink to="/settings" activeClassName="sidebar__active">Настройки</NavLink>
                     </li>
                 </ul>
-                <div className="sidebar-board-list">
-                    {
-                        board.map((item, index) => (
-                            <Link to={`/board/${item.id}`} className="sidebar-board-item" onClick={() => {openBoard(index)}} key={index}>
-                                {item.title}
-                            </Link>
-                        ))
-                    }
-                </div>
+                
             </div>
-            <div className="create-board" className={openCreateBlock === true ? 'create-board__active' : 'create-board'}>
-                <label className="create-board__label">
-                    Имя доски
-                </label>
-                <input type="text" className="create-board__input" />
-                <div className="create-board__btn" onClick={() => createBoard(document.querySelector('.create-board__input').value)}>
-                    Create
-                </div>
-            </div>
-            <div className="createBoard" onClick={() => openBlock(true)}>
-                Create Board
-            </div>
+           
         </div>
     )
 }
