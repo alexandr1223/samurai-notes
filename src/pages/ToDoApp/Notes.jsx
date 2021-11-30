@@ -1,9 +1,10 @@
-import {React, useState} from 'react';
+import {React, useState, useEffect} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
-import { currentBoard} from '../redux/action/currentBoard';
-import { boardDelete } from '../redux/action/createBoard';
+import { currentBoard} from '../../redux/action/currentBoard';
+import { boardDelete } from '../../redux/action/createBoard';
 import { Link } from 'react-router-dom';
-import deleteBtn from '../assets/img/delete-btn.svg'
+import deleteBtn from '../../assets/img/delete-btn.svg'
+import './notes.sass'
 
 function Notes({createElement}) {
 
@@ -56,14 +57,19 @@ function Notes({createElement}) {
             <div className="notes__list">
                 {
                     board.map((item, index) => (
-                        <div className="notes__item" key={index}>
-                            <Link to={`/board/${item.id}`} onClick={() => {openBoard(index)}} >
-                                {item.title}    
-                            </Link>
-                            <div className="board-list__delete-board" onClick={() => boardDeleteSender(index)}>
+                        <Link className="notes__item" key={index} to={`/board/${item.id}`} onClick={() => {openBoard(index)}} >
+                            {
+                                item.boardImage[0].small ?
+                                <img src={item.boardImage[0].small} alt="" /> :
+                                ''
+                            }
+                            <div className={item.boardImage[0].small ? "notes__itemTitle notes__itemTitle_back" : "notes__itemTitle" }>
+                                {item.title}  
+                            </div> 
+                            <div className="notes__delete-board" onClick={() => boardDeleteSender(index)}>
                                 <img src={deleteBtn} alt="" />
-                            </div>
-                        </div>
+                            </div> 
+                        </Link>
                     ))
                 }
                 <div className="createBoard__button" onClick={() => openBlock(true)}>

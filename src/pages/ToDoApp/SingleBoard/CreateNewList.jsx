@@ -1,6 +1,7 @@
 import React, {useState} from "react"
 import { useSelector,useDispatch} from 'react-redux';
-import { createList } from '../../redux/action/createBoard';
+import { createList } from '../../../redux/action/createBoard';
+import './board.sass'
 
 
 function CreateNewList() {
@@ -29,8 +30,8 @@ function CreateNewList() {
         <div className="board-list__createList">
             <span onClick={() => {openListCreation()}}>Новый список</span>
             <div className={listCreationBlock === true ? "create-list create-list--active" : "create-list"}>
-                <input type="text" className="create-list__input" value={listCreationValue} onChange={evt => listCreationValueFunc(evt)}  />
-                <button className="create-list__btn" onClick={() => createNewList()}>
+                <input type="text" className="board-list__input" value={listCreationValue} onChange={evt => listCreationValueFunc(evt)}  />
+                <button className="board-list__cardBtn" onClick={() => createNewList()}>
                     Создать
                 </button>
             </div>

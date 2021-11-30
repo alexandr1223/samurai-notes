@@ -6,6 +6,8 @@ import {addCryptoCurrencies} from '../../redux/action/cryptoData'
 import Chart from './Sidebar/Chart'
 import Tabs from './Sidebar/Tabs/Tabs'
 import Transactions from './Transactions/Transactions';
+import PortfolioList from './PortfolioList/PortfolioList';
+import PortfolioInfo from './PortfolioInfo/PortfolioInfo';
 import './financePortfolio.sass';
 
 function FinancePortfolio() {
@@ -45,8 +47,6 @@ function FinancePortfolio() {
     //         )
     //     })
     
-    // console.log(portfolioCoin)
-    
     return (
         <div className="finance">
             <div className="finance__content">
@@ -61,59 +61,11 @@ function FinancePortfolio() {
                 </div>
 
                 <div className="finance__assets">
-                    <div className="portfolio-list">
-                        
-                        <h2 className="finance__subtitle">
-                            Ваши активы
-                        </h2>
-                        {
-                            cryptoPortfolio.map(({id, buyName, image, buyPrice, currentPrice, priceChange, coinCount, coinValue, symbol}) => (
-                                buyName === '' ? '' :
-                                <div className="portfolio-list__item" key={id}>
-                                    <div className="portfolio-list__left">
-                                        <img className="portfolio-list__image" src={image} alt="" />
-                                        <div className="portfolio-list__column">
-                                            <div className="portfolio-list__name">
-                                                {buyName}
-                                            </div>
-                                            <div className={priceChange > 0 ? "portfolio-list__change portfolio-list__change_green" : "portfolio-list__change portfolio-list__change_red"}>
-                                                ${currentPrice.toLocaleString()} / {priceChange}% 
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div className="portfoio-list__center">
-                                        <div className="portfolio-list__price">
-                                            Средняя цена покупки <br />
-                                            $ {buyPrice}
-                                        </div>
-                                    </div>
-
-                                    <div className="portfolio-list__right">
-                                        <div className="portfolio-list__symbol">
-                                            {coinCount} {symbol.toUpperCase()}
-                                        </div>
-                                        <div className="portfolio-list__value">
-                                            $ {(coinCount * coinValue).toLocaleString()}
-                                        </div>
-                                    </div>
-                                    
-                                </div>
-                            ))
-                        }
-                    </div>
-
-                    <div className="portfolio-transactions">
-                        <h2 className="finance__subtitle">
-                            Последние транзакции
-                        </h2>
-                        <Transactions />
-                    </div>
-
-                    {/* <button className="finance__new-crypto" onClick={showSearchPanel}>
-                        Добавить криптовалюту
-                    </button> */}
+                    <PortfolioInfo />
+                    <PortfolioList />
+                    <Transactions />
                 </div>
+
                 <SearchCrypto coins={coins} panelStatus={searchPanelStatus} setPanelStatus={setSearchPanelStatus} />
             </div>
 

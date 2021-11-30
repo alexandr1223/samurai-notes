@@ -1,0 +1,305 @@
+$white: rgba(255, 255, 255, .90)
+$red: rgba(128, 0, 0, .85)
+    
+    
+.board
+    width: 100%
+    position: relative
+    display: flex
+    justify-content: space-between
+    &_small
+        width: calc(100% - 280px)
+    &__title
+        font-size: 36px
+        padding: 8px 12px
+        background: $white
+        border-radius: 8px
+        width: max-content
+    &__subtitle
+        background: $white
+        padding: 8px 12px        
+        border-radius: 8px
+        width: max-content
+        h2
+            font-family: sans-serif
+            color: rgba(0, 0, 0, 1)
+            font-size: 18px
+            border-radius: 6px
+            span
+                color: #2D4ACB
+                background: #F3F5F7
+                padding: 5px 10px
+                border-radius: 6px
+    &__listTitle
+        font-size: 20px
+    &__background
+        position: absolute
+        width: 100%
+        height: 100%
+        object-fit: cover
+        &_hide
+            display: none
+    &__block
+        padding-left: 50px
+        position: relative
+        z-index: 2
+        padding-right: 20px
+        min-width: 100%
+        max-width: 100%
+        transition: .4s
+        &_small
+            min-width: calc(100% - 300px)
+    &__nav
+        position: relative
+        display: flex
+        justify-content: space-between
+        align-items: center
+        z-index: 2
+    &__menu-open
+        background: #fff
+        border: none
+        display: flex
+        align-items: center
+        padding: 14px 16px
+        height: 100%
+        border-radius: 10px
+        cursor: pointer
+        transition: .4s .3s
+        &_icon
+            width: 20px
+            height: 20px
+        span
+            font-size: 16px
+            margin-left: 8px
+        &_hide
+            opacity: 0
+            visibility: hidden
+            z-index: -2
+            transition: 0s 0s
+
+.board-list
+    margin-top: 40px
+    display: flex
+    position: relative
+    grid-gap: 20px
+    width: 100%
+    max-width: 100%
+    padding-right: 40px
+    height: calc(100% - 260px)
+    &::-webkit-scrollbar
+        height: 8px
+        border-radius: 10px
+        background: transparent
+    &::-webkit-scrollbar-thumb
+        height: 8px
+        border-radius: 10px
+        background: rgba(0, 0, 0, .2)
+    &__item
+        min-width: 280px
+        position: relative
+        display: grid
+        grid-template-columns: 1fr
+        height: max-content
+        background: $white
+        border-radius: 7px
+        padding: 6px 10px 10px 10px
+    &__back 
+        position: absolute
+        left: 50px
+        width: 100%
+        background: $white
+        padding: 16px 20px
+        width: max-content
+        border-radius: 6px
+        bottom: 40px
+        cursor: pointer
+        color: #000
+        font-family: sans-serif
+        text-decoration: none
+    &__search
+        border-radius: 4px
+        padding: 10px 44px 10px 10px
+        font-size: 18px
+        font-family: sans-serif
+        cursor: text
+        border: 1px solid transparent
+        background: none
+        width: 100%
+        outline: none
+        resize: none
+        height: 42px
+        min-height: 42px
+        max-height: 250px
+        overflow: hidden
+        margin-bottom: 10px
+        &:focus
+            border: 1px solid rgba(0, 0, 0, .5)
+            background: $white
+            outline: none
+        &:hover + .board-list__delete-list
+            opacity: 1
+    &__delete-list
+        position: absolute
+        right: 17px
+        top: 19px
+        background: #fff
+        border: 1px solid #000
+        width: 25px
+        height: 25px
+        border-radius: 6px
+        opacity: 0
+        transition: .3s
+        z-index: 1
+        cursor: pointer
+        &:hover
+            opacity: 1
+        img
+            width: 16px
+            height: auto
+            position: absolute
+            top: 50%
+            left: 50%
+            transform: translate(-50%, -50%)
+            fill: #fff
+    &__addCard        
+        background: $white
+        border: dashed #e7e7e7
+        border-radius: 6px
+        padding: 6px 16px
+        text-align: center
+        cursor: pointer
+        font-size: 24px
+    &__cardCreate
+        display: flex
+        flex-direction: column
+        border-radius: 6px
+        display: none
+        &--active
+            display: block
+    &__input
+        width: 100%
+        font-size: 16px
+        padding: 12px 16px
+        border-radius: 10px
+        border: 1px solid rgba(0, 0, 0, 0.4)
+        margin-bottom: 10px
+    &__delete-card
+        position: absolute
+        right: 10px
+        top: 50%
+        transform: translateY(-50%)
+        background: #fff
+        border: 1px solid #000
+        width: 25px
+        height: 25px
+        border-radius: 6px
+        opacity: 0
+        transition: .3s
+        z-index: 1
+        cursor: pointer
+        img
+            width: 16px
+            height: auto
+            position: absolute
+            top: 50%
+            left: 50%
+            transform: translate(-50%, -50%)
+            fill: #fff
+    &--active
+        opacity: 1
+        cursor: pointer
+    &__cardBtn
+        width: 100%
+        text-decoration: none
+        color: #fff
+        background: #2D4ACD
+        font-size: 16px
+        border-radius: 10px
+        font-family: sans-serif
+        font-weight: 300
+        padding: 13px 45px
+        text-align: center
+        border: none
+        cursor: pointer
+    &__card
+        display: flex
+        flex-direction: column
+        width: 100%
+        cursor: pointer
+        border-radius: 10px
+        &:hover .board-list__delete-card
+            opacity: 1
+        &-block
+            display: grid
+            grid-template-columns: 1fr
+            grid-gap: 10px
+        &-hide 
+            height: 0
+            width: 100%
+            background: rgba(0, 0, 0, .15)
+            border-radius: 10px
+            position: relative
+            transition: .3s .1s
+            z-index: 3
+        &-content
+            padding: 12px 16px
+            border: 1px solid rgba(0, 0, 0, 0.4)
+            border-radius: 10px
+            font-size: 16px
+            position: relative
+            height: auto
+            background: $white
+            width: 100%
+            z-index: 2
+    &__createList
+        border-radius: 5px
+        background: $white
+        font-size: 18px
+        font-family: sans-serif
+        border: none
+        width: 100%
+        height: max-content
+        position: relative
+        min-width: 280px
+        max-width: 280px
+        span
+            display: block
+            font-size: 18px
+            width: 100%
+            padding: 14px 16px
+            cursor: pointer
+    &__paste
+        .board-list__card-hide
+            height: 44px
+            margin-bottom: 10px
+    &__delete-board
+        position: absolute
+        right: 10px
+        top: 15px
+        background: #fff
+        border: 1px solid #000
+        width: 25px
+        height: 25px
+        border-radius: 6px
+        opacity: 0
+        transition: .3s
+        z-index: 1
+        cursor: pointer
+        &:hover
+            opacity: 1
+        img
+            width: 16px
+            height: auto
+            position: absolute
+            top: 50%
+            left: 50%
+            transform: translate(-50%, -50%)
+            fill: #fff
+
+.create-list
+    display: none
+    flex-direction: column
+    margin-top: 0px
+    padding: 0 16px 20px 16px
+    &--active
+        display: flex

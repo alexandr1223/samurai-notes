@@ -9,7 +9,7 @@ export default function Tabs({coinsData, searchPanelOpen}) {
 
     const TabContent = ({ title, content }) => (
         <div className="tabcontent">
-          <div>{content}</div> 
+            {content}
         </div>
     );    
 
@@ -68,19 +68,19 @@ export default function Tabs({coinsData, searchPanelOpen}) {
 
     return (
         <div>
-        <div className="tab">
-            {
-                items.map((n, i) => (
-                    <button
-                        key={i}
-                        className={`tab__link ${i === active ? 'active' : ''}`}
-                        onClick={openTab}
-                        data-index={i}
-                    >{n.title}</button>
-                ))
-            }
-        </div>
-        {items[active] && <TabContent {...items[active]} />}
+            <div className="tab">
+                {
+                    items.map((n, i) => (
+                        <button
+                            key={i}
+                            className={`tab__link ${i === active ? 'active' : ''}`}
+                            onClick={openTab}
+                            data-index={i}
+                        >{n.title}</button>
+                    ))
+                }
+            </div>
+            {items[active] && <TabContent {...items[active]} />}
         </div>
     );
 }

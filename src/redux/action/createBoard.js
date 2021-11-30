@@ -4,6 +4,7 @@ export const createBoard = (boardItem, index) => ({
         new: {
             id: index,
             title: boardItem,
+            boardImage: '',
             list: [
                 {
                     listId: 0,
@@ -52,6 +53,16 @@ export const createCard = (cardName, listId, boardIndex) => ({
     }
 })
 
+export const createCardInPosition = (cardName, listId, boardIndex, insertAfter) => ({
+    type: 'CREATE_CARD_IN_POSITION',
+    payload: {
+        listId: listId,
+        cardName: cardName,
+        boardIndex: boardIndex,
+        insertAfter: insertAfter
+    }
+})
+
 export const cardDelete = (boardId, listId, cardId) => ({
     type: 'DELETE_CARD',
     payload: {
@@ -73,5 +84,15 @@ export const boardDelete = (boardId) => ({
     type: 'DELETE_BOARD',
     payload: {
         boardId: boardId
+    }
+})
+
+export const changeBoardBG = (boardId, regularImage, smallImage, color) => ({
+    type: 'CHANGE_BOARD_BG',
+    payload: {
+        boardId: boardId,
+        regularImage: regularImage,
+        smallImage: smallImage,
+        color: color
     }
 })

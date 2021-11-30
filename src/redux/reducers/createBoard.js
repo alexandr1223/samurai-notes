@@ -3,6 +3,11 @@ const initialState = {
         {
             id: 0,
             title: '1',
+            boardImage: [{
+                regular: '',
+                small: '',
+                colors: ''
+            }],
             list: [
                 {
                     listId: 0,
@@ -12,6 +17,10 @@ const initialState = {
                         {
                             cardId: 0,
                             cardName: 'Complete all task'
+                        },
+                        {
+                            cardId: 1,
+                            cardName: '23232'
                         }
                     ]
                 },
@@ -70,9 +79,12 @@ const boards = (state = initialState, action) => {
                             list: item.list.map((listArray) => {
                                 
                                 if (listArray.listId === action.payload.listId) {
-                                    let cardId = listArray.listItem.map(list => {
-                                        return list.cardId
-                                    })
+                                    let cardId = [0];
+                                    if (listArray.listItem.length > 0) {
+                                        cardId = listArray.listItem.map(list => {
+                                            return list.cardId
+                                        })
+                                    }
                                     let newCardName = {
                                         cardId: cardId.pop() + 1,
                                         cardName: action.payload.cardName
@@ -80,6 +92,41 @@ const boards = (state = initialState, action) => {
                                     return {
                                         ...listArray,
                                         listItem: [...listArray.listItem, newCardName]
+                                    }
+                                }
+                                return listArray;
+                            })
+                        }
+                    }
+                    return item;
+                })
+            }
+        }
+        case 'CREATE_CARD_IN_POSITION': {
+            return {
+                ...state,
+                boardItem: state.boardItem.map((item, index) => {
+                    if (item.id === action.payload.boardIndex) {
+                        console.log(action.payload.insertAfter)
+                        return {
+                            ...item,
+                            list: item.list.map((listArray) => {
+                                
+                                if (listArray.listId === action.payload.listId) {
+                                    let cardId = [0];
+                                    if (listArray.listItem.length > 0) {
+                                        cardId = listArray.listItem.map(list => {
+                                            return list.cardId
+                                        })
+                                    }
+                                    console.log(cardId)
+                                    let newCardName = {
+                                        cardId: cardId.pop() + 1,
+                                        cardName: action.payload.cardName
+                                    }
+                                    return {
+                                        ...listArray,
+                                        listItem: [...listArray.listItem.slice(0, action.payload.insertAfter + 1), newCardName, ...listArray.listItem.slice(action.payload.insertAfter + 1)]
                                     }
                                 }
                                 return listArray;
@@ -186,6 +233,27 @@ const boards = (state = initialState, action) => {
             return {
                 ...state,
                 boardItem: [...state.boardItem.slice(0, action.payload.boardId), ...state.boardItem.slice(action.payload.boardId + 1)]
+            }
+        }
+        case 'CHANGE_BOARD_BG': {
+            return {
+                ...state,
+                boardItem: state.boardItem.map(item => {
+                    if (item.id === action.payload.boardId) {
+                        return {
+                            ...item,
+                            boardImage: item.boardImage.map(image => {
+                                return {
+                                    ...image,
+                                    regular: action.payload.regularImage,
+                                    small: action.payload.smallImage,
+                                    colors: action.payload.color
+                                }
+                            })
+                        }
+                    }
+                    return item;
+                })
             }
         }
         default:

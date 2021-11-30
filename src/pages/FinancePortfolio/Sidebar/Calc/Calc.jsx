@@ -1,30 +1,47 @@
 import React, {useState} from 'react'
 import { useDispatch} from 'react-redux';
-import { sellCrypto } from '../../../../redux/action/cryptoPortfolio';
 import { useSelector } from 'react-redux';
-import {setNewLine, addNewCoinTransaction, sellCoinInfo} from '../../../../redux/action/changeCoinOnSidebar';
-import { addTransaction } from '../../../../redux/action/transactions';
+import { addNewCoinTransaction, sellCoinInfo } from '../../../../redux/action/changeCoinOnSidebar';
+import { IoMdCloseCircleOutline } from "react-icons/io";
+import './calc.sass';
 
-export default function Transaction({searchPanelStatus, id}) {
+export default function Calc({searchPanelStatus, calcVisibilityProperty, setCalcVisibilityProperty}) {
 
     const dispatch = useDispatch();
     const coins = useSelector(({cryptoData}) => cryptoData.data);
-    const sidebarCoin = useSelector(({changeSidebarCoin}) => changeSidebarCoin)
+    const sidebarCoin = useSelector(({changeSidebarCoin}) => changeSidebarCoin);
 
+    
     const [buyCount, setBuyCount] = useState(0);
     const [sellCount, setSellCount] = useState(0);
+    const [sellPrice, setSellPrice] = useState('');
 
     // Установка кастомной цены покупки
     const [showCustomPriceInput, setShowCustomPriceInput] = useState(false);
-    const [customSellPrice, setCustomSellPrice] = useState('');
+    const [customBuyPrice, setCustomBuyPrice] = useState('');
 
-    const sellCryptoFromPortfolio = (id, buyName, image, buyPrice, currentPrice, priceChange, coinCount, coinValue, symbol) => {
-        id = id.replace(/\s/g, '');
-        let transactionType = 'sell';
-        dispatch(sellCrypto(id, buyName, image, buyPrice, currentPrice, priceChange, coinCount, coinValue, symbol))
-        dispatch(addTransaction(id, buyName, image, buyPrice, currentPrice, priceChange, coinCount, coinValue, symbol, transactionType))
+    // Результат калькулятора
+    const [calcProfit, setCalcProfit] = useState('');
+
+    // Закрытие калькулятора
+    const changeCalcVisibility = () => {
+        setCalcVisibilityProperty(!calcVisibilityProperty);
     }
 
+    const calcResult = (buyCoin, buyPrice, sellPrice) => {
+        let buySum = buyCoin * buyPrice;
+        let sellSum = buyCoin * sellPrice;
+        let profit = sellSum - buySum;
+        console.log(profit)
+        if (!isNaN(profit)) {
+            setCalcProfit(profit);
+        } else {
+            return '';
+        }
+       
+    }
+
+    // Получение текущей суммы покупки
     const changeCoinAddCount = (value) => {
         if (!isNaN(value)) {
             setBuyCount(parseInt(value))
@@ -33,10 +50,10 @@ export default function Transaction({searchPanelStatus, id}) {
             if (addCoin === undefined) {
                 let btcCoin = coins.find(coin => coin.name === 'Bitcoin')
                 dispatch(addNewCoinTransaction(btcCoin))
-                setSellCount((value * btcCoin.current_price).toFixed(5))
+                setSellCount((value * btcCoin.current_price).toFixed(1))
             } else {
                 dispatch(addNewCoinTransaction(addCoin))
-                setSellCount((value * addCoin.current_price).toFixed(5))
+                setSellCount((value * addCoin.current_price).toFixed(1))
             }
         }
     }
@@ -49,35 +66,16 @@ export default function Transaction({searchPanelStatus, id}) {
             if (addCoin === undefined) {
                 let btcCoin = coins.find(coin => coin.name === 'Bitcoin')
                 dispatch(sellCoinInfo(btcCoin))
-                setBuyCount((value / btcCoin.current_price ).toFixed(5))
+                setBuyCount((value / btcCoin.current_price ).toFixed(1))
             } else {
                 dispatch(sellCoinInfo(addCoin))
-                setBuyCount((value / addCoin.current_price).toFixed(5))
+                setBuyCount((value / addCoin.current_price).toFixed(1))
             }
         } else {
             console.log('nan')
         }
     }
 
-    const setLineBuy = () => {
-        dispatch(setNewLine(0))
-        searchPanelStatus();
-    }
-
-    // Пока отключена возможность выбора монеты за которую мы продаем
-    // const setLineSell = () => {
-    //     dispatch(setNewLine(1))
-    //     searchPanelStatus();
-    // }
-
-    // Переключение ползунка для открытия кастомного ввода цены, открытие инпута с кастомной ценой
-    const openCustomPriceField = () => {
-        setShowCustomPriceInput(!showCustomPriceInput)
-    }
-    const changeCustomSellPrice = (value) => {
-        setCustomSellPrice(value)
-    }
-    
     const findBuy = () => {
         if (sidebarCoin.buyTopCoin === 'Bitcoin') {
             return (
@@ -89,7 +87,22 @@ export default function Transaction({searchPanelStatus, id}) {
             )
         }
     }
+
+    // Изменение цены покупки
+    const openCustomPriceField = () => {
+        setShowCustomPriceInput(!showCustomPriceInput)
+    }
+
+    const changeCustomBuyPrice = (value) => {
+        setCustomBuyPrice(value)
+    }
+
+    // Изменение цены продажи
+    const changeSellPrice = (value) => {
+        setSellPrice(value)
+    }
     
+    // Поиск монеты которую продаем
     const findSell = () => {
         if (sidebarCoin.buyBottomCoin === 'Tether') {
             return (
@@ -101,18 +114,15 @@ export default function Transaction({searchPanelStatus, id}) {
             )
         }        
     }
-
+    
     return (
-        <div className="transaction" key={id}>
-            <div className="transaction__title">
-                Продать криптовалюту
-            </div>
+        <div className={calcVisibilityProperty ? "calc calc_show" : 'calc'}>
             <div className="transaction__block">
 
-                <label htmlFor="quantity" className="transaction__label">Продать</label>
+                <label htmlFor="quantity" className="transaction__label">Количество покупаемых монет <IoMdCloseCircleOutline className="calc__close" onClick={changeCalcVisibility} /></label>
                 <div className="transaction__row transaction__buy-line">
                     <input id="quantity" type="text" className="transaction__input" placeholder="0.00" value={buyCount} onChange={e => changeCoinAddCount(e.target.value)} />
-                    <div className="transaction__coin" onClick={setLineBuy}>
+                    <div className="transaction__coin">
                         <img src={findBuy() ? findBuy().image : ''} alt="" className="transaction__image" />
                         <div className="transaction__name">
                             {findBuy() ? findBuy().symbol.toUpperCase() : ''}
@@ -120,8 +130,8 @@ export default function Transaction({searchPanelStatus, id}) {
                     </div>
                 </div>
 
-                <label htmlFor="quantity" className="transaction__label">Купить</label>
-                <div className={showCustomPriceInput ? "transaction__row transaction__row_custom" : "transaction__row"}>
+                <label htmlFor="quantity" className="transaction__label">Цена покупки</label>
+                <div className={showCustomPriceInput ? "transaction__row transaction__row_custom" : "transaction__row  transaction__buy-line"}>
                     <input id="price" type="text" className="transaction__input" value={sellCount} onChange={e => changeCoinSellCount(e.target.value)} placeholder="0.00" />
                     <div className="transaction__coin">
                         <img src={findSell() ? findSell().image : ''} alt="" className="transaction__image" />
@@ -131,8 +141,8 @@ export default function Transaction({searchPanelStatus, id}) {
                     </div>
                 </div>
 
-                <div className={!showCustomPriceInput ? "transaction__row transaction__row_custom" : "transaction__row"}>
-                    <input id="price" type="text" className="transaction__input" value={customSellPrice} onChange={e => changeCustomSellPrice(e.target.value)} placeholder="0.00" />
+                <div className={!showCustomPriceInput ? "transaction__row transaction__row_custom" : "transaction__row  transaction__buy-line"}>
+                    <input id="price" type="text" className="transaction__input" value={customBuyPrice} onChange={e => changeCustomBuyPrice(e.target.value)} placeholder="0.00" />
                     <div className="transaction__coin">
                         <img src={findSell() ? findSell().image : ''} alt="" className="transaction__image" />
                         <div className="transaction__name">
@@ -140,11 +150,22 @@ export default function Transaction({searchPanelStatus, id}) {
                         </div>
                     </div>
                 </div> 
-                
+
+                <label htmlFor="quantity" className="transaction__label">Цена продажи</label>
+                <div className="transaction__row">
+                    <input id="price" type="text" className="transaction__input" value={sellPrice} onChange={e => changeSellPrice(e.target.value)} placeholder="0.00" />
+                    <div className="transaction__coin">
+                        <img src={findSell() ? findSell().image : ''} alt="" className="transaction__image" />
+                        <div className="transaction__name">
+                            {findSell() ? findSell().symbol.toUpperCase() : ''}
+                        </div>
+                    </div>
+                </div>
+
                 <div className="transaction__price">
                     <label htmlFor="quantity" className="transaction__label">Цена</label>
                     <div className="transaction__priceValue">
-                        {showCustomPriceInput ? customSellPrice : (findBuy() ? findBuy().current_price : '')} <span>{findSell() ? findSell().symbol.toUpperCase() : ''}</span> за <span>{findBuy() ? findBuy().symbol.toUpperCase() : ''}</span>
+                        {showCustomPriceInput ? customBuyPrice : (findBuy() ? findBuy().current_price : '')} <span>{findSell() ? findSell().symbol.toUpperCase() : ''}</span> за 1 <span>{findBuy() ? findBuy().symbol.toUpperCase() : ''}</span>
                     </div>
                 </div>
 
@@ -156,10 +177,23 @@ export default function Transaction({searchPanelStatus, id}) {
                     </label>
                 </div>
 
-
-                <button className="transaction__add" onClick={() => {sellCryptoFromPortfolio(findBuy().name, sidebarCoin.buyTopCoin, findBuy().image, !showCustomPriceInput ? findBuy().current_price : customSellPrice, findBuy().current_price, findBuy().price_change_percentage_24h, buyCount, findBuy().current_price, findBuy().symbol)}}>
-                    Добавить
+                <button className="transaction__add" onClick={() => {calcResult(buyCount, !showCustomPriceInput ? findBuy().current_price : customBuyPrice, sellPrice)}}>
+                    Рассчитать
                 </button>
+
+                {
+                    calcProfit !== ''
+                    ? <div className="calc-result">
+                        <div className="calc-result__row">
+                            <div className="calc-result__text">
+                                Прибыль: <span className={calcProfit > 0 ? 'calc-result__green' : 'calc-result__red'}>{calcProfit.toLocaleString()} $</span>
+                            </div>
+                        </div>
+                    </div>
+                    : ''
+                }
+                
+
             </div>
         </div>
     )

@@ -1,0 +1,100 @@
+.finance-nav
+    display: flex
+    justify-content: space-between
+    padding: 16px 0
+    margin-top: 10px
+    &__item
+        font-size: 16px
+        font-weight: 600
+        &:not(:first-child)
+            text-align: right
+        &_name
+            width: 13%
+        &_price
+            width: 12%
+        &_profit24
+            width: 10%
+            margin-right: 20px
+        &_profitAll
+            width: 16,6%
+            margin-right: 20px
+        &_avgPrice
+            width: 16%
+        &_holdings
+            width: 13%
+
+.portfolio-list
+    border-radius: 20px
+    background: #fff
+    padding: 20px
+    min-width: 840px
+    max-width: 840px
+    box-shadow: 1px 1px 10px 10px rgba(133, 98, 98, 0.03)
+    max-height: 600px
+    &__item
+        display: flex
+        align-items: center
+        justify-content: space-between
+        padding: 15px 0
+        &_buy
+            background: linear-gradient(to right, #93f9b9, #34ce98)
+            border-radius: 8px
+        border-top: 1px solid rgba(0, 0, 0, 0.1)
+    
+    &__name
+        display: flex
+        justify-content: flex-start
+        align-items: center
+        width: 13%
+        &-image
+            width: 32px
+            height: 32px    
+            object-fit: cover
+            margin-right: 10px
+        &-column
+            display: flex
+            justify-content: space-between
+            flex-direction: column
+        &-ticker
+            font-weight: 600
+            margin-bottom: 10px
+        &-text
+            color: rgba(156,163,175, 1)
+    &__price
+        text-align: center
+        display: flex
+        flex-direction: column
+        align-items: flex-end
+        height: 100%
+        &-count
+            font-size: 16px
+            margin-bottom: 8px
+            font-weight: 500
+        &-change
+            font-size: 15px
+            &_green
+                color: green
+            &_red
+                color: red
+    &__24h
+        width: 10%
+    &__profitAll
+        width: 16,6%
+    &__avgPrice
+        width: 16%
+        align-items: center
+        display: flex
+        justify-content: center
+    &__holdings
+        width: 33%
+        height: 44px
+        display: flex
+        align-items: flex-end
+        flex-direction: column
+        justify-content: space-between
+        &_sum
+            display: flex
+            font-size: 15px
+            color: rgba(0, 0, 0, 0.6)
+        &_symbol
+            font-weight: 600

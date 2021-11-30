@@ -1,0 +1,135 @@
+.notes
+    display: flex
+    flex-direction: column
+    padding-top: 20px
+    width: calc(100% - 340px)
+    padding-right: 40px
+    position: relative
+    padding-left: 50px
+    &__list
+        display: grid
+        grid-template-columns: repeat(7, 1fr)
+        grid-gap: 20px
+    &__title
+        font-size: 30px
+        font-family: sans-serif
+        margin-bottom: 30px
+    &__item
+        background: rgba(0, 0, 0, 0.12)
+        border-radius: 6px
+        padding: 16px 16px
+        font-size: 18px
+        width: 200px
+        height: 160px
+        display: block
+        position: relative
+        text-decoration: none
+        a
+            color: #fff
+        &:hover > .notes__delete-board
+            opacity: 1
+        img
+            width: 100%
+            height: 100%
+            position: absolute
+            left: 0
+            top: 0
+            border-radius: 6px
+            z-index: 1
+    &__itemTitle
+        font-size: 20px
+        color: #000
+        text-decoration: none
+        position: relative
+        z-index: 3
+        margin-right: 30px
+        &_back
+            background: rgba(255, 255, 255, .8)
+            padding: 4px 6px
+            border-radius: 6px
+    &__delete-board
+        position: absolute
+        right: 10px
+        top: 16px
+        background: #fff
+        border: 1px solid #000
+        width: 30px
+        height: 30px
+        border-radius: 6px
+        opacity: 0
+        transition: .3s
+        z-index: 1
+        cursor: pointer
+        &:hover
+            opacity: 1
+        img
+            width: 16px
+            height: auto
+            position: absolute
+            top: 50%
+            left: 50%
+            transform: translate(-50%, -50%)
+            fill: #fff
+
+.create-board
+    position: absolute
+    top: 50px
+    left: 50%
+    transform: translateX(-50%)
+    background: #fff
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.4)
+    padding: 20px
+    display: flex
+    flex-direction: column
+    width: 300px
+    border-radius: 6px
+    display: none
+    &__active
+        position: absolute
+        top: 50px
+        left: 50%
+        transform: translateX(-50%)
+        background: #fff
+        box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.4)
+        padding: 20px
+        display: flex
+        flex-direction: column
+        width: 300px
+        border-radius: 6px
+        display: block
+    &__label
+        text-align: center
+        font-size: 24px
+        font-family: sans-serif
+        display: block
+        margin-bottom: 20px
+    &__error
+        color: red
+        font-size: 14px
+        margin-bottom: 6px
+        font-family: sans-serif
+        display: none
+        &--active
+            display: block
+    &__input
+        width: 100%
+        padding: 10px 14px
+        display: block
+        margin: 0 auto
+        margin-bottom: 20px
+        font-size: 16px
+        border-radius: 6px
+    &__btn
+        font-size: 15px
+        text-decoration: none
+        color: #fff
+        background: #2D4ACD
+        border-radius: 10px
+        text-transform: uppercase
+        font-family: sans-serif
+        font-weight: 300
+        width: max-content
+        padding: 12px 60px
+        text-align: center
+        cursor: pointer
+        margin: 0 auto
