@@ -24,8 +24,6 @@ export default function ChangeBoardBGColor() {
         dispatch(changeBoardBG(currentBoardIndex, '', '', color))
     }
 
-    console.log(gradients)
-
     return (
         <div className="board-color">
             <div className="board-color__block">
@@ -34,7 +32,7 @@ export default function ChangeBoardBGColor() {
                     {/* <input type="text" onChange={(e) => changeSearchText(e.target.value)} /> */}
                 </div>
                 <div className="board-color__list">
-                    <div className="board-color__item" onClick={() => newBoardColor(currentBoardIndex, '#F2F2F2')} style={{background:'#F2F2F2'}}></div>
+                    <div className="board-color__item" onClick={() => newBoardColor(currentBoardIndex, '#F4F7FD')} style={{background:'#F4F7FD'}}></div>
                     <div className="board-color__item" onClick={() => newBoardColor(currentBoardIndex, 'rgb(137, 96, 158)')} style={{background:'rgb(137, 96, 158)'}}></div>
                     <div className="board-color__item" onClick={() => newBoardColor(currentBoardIndex, 'rgb(0, 174, 204)')} style={{background:'rgb(0, 174, 204)'}}></div>
                     <div className="board-color__item" onClick={() => newBoardColor(currentBoardIndex, 'rgb(205, 90, 145)')} style={{background:'rgb(205, 90, 145)'}}></div>

@@ -33,56 +33,54 @@ export default function PortfolioList() {
                     Активы
                 </div>
             </div>
+            <div className="portfolio-list__block">
             {
-                cryptoPortfolio.map(({id, buyName, image, buyPrice, currentPrice, priceChange, coinCount, coinValue, symbol}) => (
-                    buyName === '' ? '' :
-                    <div className="portfolio-list__item" key={id}>
-                        <div className="portfolio-list__name">
-                            <img className="portfolio-list__name-image" src={image} alt="" />
-                            <div className="portfolio-list__name-column">
-                                <div className="portfolio-list__name-ticker">
-                                    {symbol.toUpperCase()}
+                        cryptoPortfolio.map(({id, buyName, image, buyPrice, currentPrice, priceChange, coinCount, coinValue, symbol}) => (
+                            buyName === '' ? '' :
+                            <div className="portfolio-list__item" key={id}>
+                            <div className="portfolio-list__name">
+                                <img className="portfolio-list__name-image" src={image} alt="" />
+                                <div className="portfolio-list__name-column">
+                                    <div className="portfolio-list__name-ticker">
+                                        {symbol.toUpperCase()}
+                                    </div>
+                                    <div className="portfolio-list__name-text">
+                                        {buyName}
+                                    </div>
                                 </div>
-                                <div className="portfolio-list__name-text">
-                                    {buyName}
+                            </div>
+
+                            <div className="portfolio-list__price">
+                                {currentPrice.toLocaleString()}$
+                            </div>
+
+                            <div className="portfolio-list__24h">
+                                <div className={priceChange > 0 ? "portfolio-list__24h-change portfolio-list__24h-change_green" : "portfolio-list__24h-change portfolio-list__24h-change_red"}>
+                                    {priceChange.toFixed(2)}% 
                                 </div>
                             </div>
-                        </div>
 
-                        <div className="portfolio-list__price">
-                            <div className="portfolio-list__price-count">
-                                ${currentPrice.toLocaleString()}
-                            </div>
-                            <div className={priceChange > 0 ? "portfolio-list__price-change portfolio-list__price-change_green" : "portfolio-list__price-change portfolio-list__price-change_red"}>
-                                {priceChange}% 
-                            </div>
-                        </div>
-
-                        <div className="portfolio-list__24h">
-                            -5$
-                        </div>
-
-                        <div className="portfolio-list__profitAll">
-                            -91$
-                        </div>
-                        
-                        <div className="portfoio-list__avgPrice">
-                            {buyPrice}$
-                        </div>
-
-                        <div className="portfolio-list__holdings">
-                            <div className="portfolio-list__holdings_sum">
-                                $ {(coinCount * coinValue).toLocaleString()}
-                            </div>
-                            <div className="portfolio-list__holdings_symbol">
-                                {coinCount} {symbol.toUpperCase()}
+                            <div className={(currentPrice*coinCount-buyPrice*coinCount) > 0 ? "portfolio-list__profitAll portfolio-list__profitAll_green" : "portfolio-list__profitAll portfolio-list__profitAll_red"}>
+                                {(currentPrice*coinCount-buyPrice*coinCount).toFixed(2)}$
                             </div>
                             
+                            <div className="portfolio-list__avgPrice">
+                                {buyPrice.toFixed(2)}$
+                            </div>
+
+                            <div className="portfolio-list__holdings">
+                                <div className="portfolio-list__holdings_sum">
+                                    $ {(coinCount * coinValue).toLocaleString()}
+                                </div>
+                                <div className="portfolio-list__holdings_symbol">
+                                    {coinCount} {symbol.toUpperCase()}
+                                </div>
+                            </div>                            
+                            
                         </div>
-                        
-                    </div>
-                ))
-            }
+                        ))
+                    }
+            </div>
         </div>
     )
 }

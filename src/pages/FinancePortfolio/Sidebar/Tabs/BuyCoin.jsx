@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import { useDispatch} from 'react-redux';
 import { addCrypto } from '../../../../redux/action/cryptoPortfolio';
 import { useSelector } from 'react-redux';
@@ -26,6 +26,10 @@ export default function Transaction({searchPanelStatus, id}) {
     const changeCalcVisibility = () => {
         setCalcVisibility(!calcVisibility);
     }
+
+    useEffect(() => {
+        console.count('render1')
+    }, [])
 
     const addCryptoToPortfolio = (id, buyName, image, buyPrice, currentPrice, priceChange, coinCount, coinValue, symbol) => {
         id = id.replace(/\s/g, '');
@@ -114,7 +118,6 @@ export default function Transaction({searchPanelStatus, id}) {
         }        
     }
 
-    console.log(calcVisibility)
     return (
         <div className="tabcontent__item">
             <Calc calcVisibilityProperty={calcVisibility} setCalcVisibilityProperty={setCalcVisibility} />

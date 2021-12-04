@@ -29,3 +29,10 @@ export const sellCrypto = (id, buyName, image, buyPrice, currentPrice, priceChan
         symbol: symbol
     }
 })
+
+export const updateCurrencies = (data) => ({
+    type: 'UPDATE_CURRENCIES',
+    payload: {
+        data: data,
+    }
+})

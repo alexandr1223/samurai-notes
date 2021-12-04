@@ -1,5 +1,6 @@
 import React, {useState, useRef, useEffect} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
+import {useParams} from "react-router-dom";
 import styled from 'styled-components';
 import CreateNewList from './CreateNewList';
 import { cardDelete, listDelete, changeListTitle, createCard, openCardCreation, createCardInPosition } from '../../../redux/action/createBoard';
@@ -8,7 +9,21 @@ import BoardMenu from '../BoardMenu/BoardMenu';
 import { IoSettingsOutline } from 'react-icons/io5';
 import './board.sass';
 
+const BoardBg = styled.div`
+    background: ${(props) => {
+        if (props.currentBoard.boardImage[0].colors && props.currentBoard.boardImage[0].colors.length < 4) {
+            return `linear-gradient(to right, ${props.currentBoard.boardImage[0].colors[0]}, ${props.currentBoard.boardImage[0].colors[1]})`
+        } else if (props.currentBoard.boardImage[0].colors && props.currentBoard.boardImage[0].colors.length > 4) {
+            return props.currentBoard.boardImage[0].colors;
+        } else {
+            return '#F2F2F2';
+        }
+    }}
+`;
+
 function Board({wrapRef}) {
+
+    let slug = useParams();
 
     const dispatch = useDispatch();
     
@@ -68,17 +83,16 @@ function Board({wrapRef}) {
     const [currentList, setCurrentList] = useState();
     const [currentCard, setCurrentCard] = useState();
 
-    function dragOverHandler(e) {
-        e.preventDefault();  
-        if (e.target.parentElement.classList.contains('board-list__card-block') || e.target.parentElement.classList.contains('board-list__card-hide')) {
-            // e.target.parentElement.style.height = '100px'
-            // e.target.style.boxShadow = '0 2px 3px gray'
-            e.target.parentElement.classList.add('board-list__paste')
-        } else {
-            console.log('12')
-        }
-       
-    }
+    // function dragOverHandler(e) {
+    //     e.preventDefault();  
+    //     if (e.target.parentElement.classList.contains('board-list__card-block') || e.target.parentElement.classList.contains('board-list__card-hide')) {
+    //         // e.target.parentElement.style.height = '100px'
+    //         // e.target.style.boxShadow = '0 2px 3px gray'
+    //         e.target.parentElement.classList.add('board-list__paste')
+    //     } else {
+    //         console.log('12')
+    //     }
+    // }
 
     function dragOverHandler1(e) {
         e.preventDefault();   
@@ -90,12 +104,12 @@ function Board({wrapRef}) {
         e.target.parentElement.classList.remove('board-list__paste')
     }
 
-    function dragLeaveHandler(e) {
-        if (e.target.parentElement.querySelector('.board-list__card-hide')) {
-            e.target.parentElement.removeChild(document.querySelector('.board-list__card-hide'))
-        }
+    // function dragLeaveHandler(e) {
+    //     if (e.target.parentElement.querySelector('.board-list__card-hide')) {
+    //         e.target.parentElement.removeChild(document.querySelector('.board-list__card-hide'))
+    //     }
         
-    }
+    // }
 
     function dragStartHandler(e, board, item) {
         setCurrentList(board);
@@ -107,20 +121,11 @@ function Board({wrapRef}) {
     }
     
     function dropHandler(e, card, item) {
-       
         e.preventDefault();  
-        e.target.parentElement.classList.remove('board-list__paste')
         
         if (e.target.classList.contains('board-list__card-content')) {
             const currentIndex = currentList.listItem.map(function (e) {return e.cardId}).indexOf(currentCard.cardId);
-            // currentList.listItem.splice(currentIndex, 1);
-            // currentList.listItem = [...currentList.listItem.slice(0, currentIndex), ...currentList.listItem.slice(currentIndex + 1)]
-    
-            console.log(currentList)
             dispatch(cardDelete(currentBoardIndex, currentList.listId, currentIndex))
-            // card.listItem.splice(dropIndex + 1, 0, currentCard)
-            // console.log(currentList.listId)
-            
             let dropIndex = card.listItem.indexOf(item)
             dispatch(createCardInPosition(currentCard.cardName, card.listId, currentBoardIndex, dropIndex));
             e.target.parentElement.classList.remove('board-list__paste')
@@ -128,17 +133,16 @@ function Board({wrapRef}) {
     }
     
 
-    function dropCardHandler(e, card, board) {
-        e.preventDefault();  
+    // function dropCardHandler(e, card, board) {
+    //     e.preventDefault();  
         
-        if (!e.target.classList.contains('board-list__card-content')) {
-            const currentIndex = currentList.listItem.map(function (e) {return e.cardId}).indexOf(currentCard.cardId);
-            dispatch(cardDelete(currentBoardIndex, currentList.listId, currentIndex))
-            dispatch(createCard(currentCard.cardName, card.listId, currentBoardIndex));
-            e.target.parentElement.classList.remove('board-list__paste')
-        }
-        
-    }
+    //     if (!e.target.classList.contains('board-list__card-content')) {
+    //         const currentIndex = currentList.listItem.map(function (e) {return e.cardId}).indexOf(currentCard.cardId);
+    //         dispatch(cardDelete(currentBoardIndex, currentList.listId, currentIndex))
+    //         dispatch(createCard(currentCard.cardName, card.listId, currentBoardIndex));
+    //         e.target.parentElement.classList.remove('board-list__paste')
+    //     }
+    // }
 
     // ----- Настройка прокрутки списка -----
 
@@ -159,29 +163,17 @@ function Board({wrapRef}) {
         boardRef.current.style.maxWidth = wrapRef.current.clientWidth - 280 + 'px';
     }, [])
 
-
-    // Установка фонового цвета
-    console.log(currentBoard.boardImage[0].colors.length)
-    const BoardBg = styled.div`
-        background: ${props => {
-            if (currentBoard.boardImage[0].colors && currentBoard.boardImage[0].colors.length < 4) {
-               return `linear-gradient(to right, ${currentBoard.boardImage[0].colors[0]}, ${currentBoard.boardImage[0].colors[1]})`
-            } else if (currentBoard.boardImage[0].colors && currentBoard.boardImage[0].colors.length > 4) {
-                return currentBoard.boardImage[0].colors;
-            } else {
-                return '#F2F2F2'
-            }
-        }}
-        
-    `;
-    
-    
     return (
         <div className={boardMenuOpen ? "board board_small" : "board"} ref={boardRef} >
             {
                 !currentBoard.boardImage[0].regular
-                ? ''
+                ? <div className="board__background board__background_hide"></div>
                 : <img src={currentBoard.boardImage[0].regular} alt="" className="board__background"/>
+            }
+            {
+                !currentBoard.boardImage[0].colors
+                ? <div className="board__background board__background_hide"></div>
+                : <BoardBg currentBoard={currentBoard} className="board__background"></BoardBg>
             }
             
             <div className={boardMenuOpen ? "board__block board__block_small" : "board__block"} >

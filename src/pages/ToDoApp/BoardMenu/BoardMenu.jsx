@@ -15,11 +15,10 @@ export default function BoardMenu({boardMenuStatus, setBoardMenuStatus}) {
     const changeBackgroundOpen = () => {
         setOpenBackgroundChange(!openBackgroundChange);
     }
-    console.log('open', openBackgroundChange)
+    
     const closeBoardMenu = () => {
         setBoardMenuStatus(!boardMenuStatus);
     }
-    
     return (
         <div className={boardMenuStatus ? "board-menu board-menu_open" : "board-menu"}>
             <div className="board-menu__block">
@@ -36,14 +35,14 @@ export default function BoardMenu({boardMenuStatus, setBoardMenuStatus}) {
                     <span>Сменить фон стола</span>
                 </div>
 
-                <div className="change-style" onClick={changeBackgroundOpen}>
+                {/* <div className="change-style" onClick={changeBackgroundOpen}>
                     {
                         currentBoard.boardImage[0].small === '' 
                         ? <div className="change-style__image change-style__image_square"></div>
                         : <img src={currentBoard.boardImage[0].small} alt="" className={"change-style__image"} />
                     }
                     <span>Сменить цвет карточек</span>
-                </div>
+                </div> */}
             </div>
             
             <BoardMenuTabs backgroundChange={openBackgroundChange} setOpenBackgroundChange={setOpenBackgroundChange} />

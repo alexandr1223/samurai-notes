@@ -1,56 +1,32 @@
-import React, {useState} from 'react';
-import ChangeBoardBackground from './ChangeBoardBGImage';
+import React, {useEffect} from 'react';
+import ChangeBoardBGImage from './ChangeBoardBGImage';
 import ChangeBoardBGColor from './ChangeBoardBGColor';
 import { MdClose } from "react-icons/md";
+import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
+import 'react-tabs/style/react-tabs.css';
 import './BoardMenu.sass';
 
-export default function Tabs({backgroundChange, setOpenBackgroundChange}) {
-    const [ active, setActive ] = useState(0);
-
-    const TabContent = ({ title, content }) => (
-        <div className="tabcontent">
-            {content}
-        </div>
-    );    
-    console.log()
-
-    const changeImage = () => {
-        return (
-            <ChangeBoardBackground backgroundChange={backgroundChange} />
-        )
-    }
-
-    const changeColor = () => {
-        return (
-            <ChangeBoardBGColor />
-        )
-    }
-
-    const items = [
-        { title: 'Image', content: changeImage() },
-        { title: 'Color', content: changeColor() },
-      ];
-
-    
-
-    const openTab = e => setActive(+e.target.dataset.index);
+export default function BoardMenuTabs({backgroundChange, setOpenBackgroundChange}) {
+    useEffect(() => {
+        console.count('rend2')
+    }, [])
 
     return (
         <div className={backgroundChange ? "board-tab board-tab__open" : "board-tab"}>
-            <div className="board-tab__nav">
-                {
-                    items.map((n, i) => (
-                        <button
-                            key={i}
-                            className={`board-tab__link ${i === active ? 'active' : ''}`}
-                            onClick={openTab}
-                            data-index={i}
-                        >{n.title}</button>
-                    ))
-                }
-                <MdClose className="board-tab__close"  onClick={() => setOpenBackgroundChange(!backgroundChange)} />
-            </div>
-            {items[active] && <TabContent {...items[active]} />}
+            <Tabs>
+                <TabList className="board-tab__nav">
+                    <Tab className="board-tab__link">Image</Tab>
+                    <Tab className="board-tab__link">Color</Tab>
+                    <MdClose className="board-tab__close"  onClick={() => setOpenBackgroundChange(!backgroundChange)} />
+                </TabList>
+
+                <TabPanel className="board-tabcontent">
+                    <ChangeBoardBGImage />
+                </TabPanel>
+                <TabPanel className="board-tabcontent">
+                    <ChangeBoardBGColor />
+                </TabPanel>
+            </Tabs>
         </div>
-    );
+    )
 }

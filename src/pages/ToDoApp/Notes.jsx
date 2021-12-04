@@ -1,4 +1,4 @@
-import {React, useState, useEffect} from 'react';
+import {React, useState} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import { currentBoard} from '../../redux/action/currentBoard';
 import { boardDelete } from '../../redux/action/createBoard';
@@ -57,7 +57,7 @@ function Notes({createElement}) {
             <div className="notes__list">
                 {
                     board.map((item, index) => (
-                        <Link className="notes__item" key={index} to={`/board/${item.id}`} onClick={() => {openBoard(index)}} >
+                        <Link className="notes__item" key={index} to={`/notes/board/${item.id}`} onClick={() => {openBoard(index)}} >
                             {
                                 item.boardImage[0].small ?
                                 <img src={item.boardImage[0].small} alt="" /> :

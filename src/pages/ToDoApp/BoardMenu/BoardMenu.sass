@@ -3,11 +3,13 @@
     min-width: 300px
     width: 300px
     padding: 20px
-    height: 100vh
+    height: 100%
     position: relative
-    right: -300px
+    right: -350px
     top: 0
     transition: .4s
+    border-radius: 20px
+    z-index: 3
     &_open
         right: 0
         z-index: 4
@@ -26,52 +28,60 @@
         margin-bottom: 20px
         font-size: 20px
 
+.board-tabcontent
+    max-height: 100%
+    height: 100%
+
 .board-tab
     position: absolute
-    right: -320px
+    right: -380px
     top: 0
-    height: 100vh
+    height: 100%
     background: #fff
+    border-radius: 20px
     width: 300px
     padding: 20px
     transition: .4s
     &__open
         right: 0
-
-.board-tab
     &__nav
         display: flex
         align-items: center
         justify-content: space-between
         margin-bottom: 20px
-        button
-            background-color: inherit
-            float: left
-            border: none
-            outline: none
-            cursor: pointer
-            padding: 8px 30px
-            transition: 0.3s
-            font-size: 17px
-            border-radius: 20px
-            background: rgba(0, 0, 0, .07)
-            &:hover
-                background: #D2E3FD
-                color: #2E73E4
-    .active
+        padding: 0
+    .react-tabs
+        display: flex
+        flex-direction: column
+        height: 100%
+    .react-tabs__tab--selected
         background: #D2E3FD
         color: #2E73E4
     &__link
-        color: rgba(0, 0, 0, 0.6)
         width: max-content
         margin: 0 3px
         text-align: center
+        list-style: none
+        float: left
+        border: none
+        outline: none
+        cursor: pointer
+        padding: 8px 30px
+        transition: 0.3s
+        font-size: 17px
+        border-radius: 20px
+        background: rgba(0, 0, 0, .07)
+        &:hover
+            background: #D2E3FD
+            color: #2E73E4
     &__close
         width: 25px
         height: 25px
         cursor: pointer
 
 .background
+    height: 100%
+    max-height: 100%
     &__close
         position: absolute
         right: 20px
@@ -83,13 +93,15 @@
         display: flex
         flex-direction: column
         height: 100%
+        max-height: 100%
+        overflow: hidden
     &__list
         display: grid
         grid-template-columns: 1fr 1fr
         grid-gap: 8px
         width: 100%
         margin-top: 20px
-        height: 100%
+        height: calc(100% - 150px)
         overflow-y: scroll
         padding-right: 2px
         &::-webkit-scrollbar
@@ -155,6 +167,9 @@
             background: #ccc
     
 .board-color
+    display: flex
+    flex-direction: column
+    height: 100%
     &__block
         display: flex
         flex-direction: column
@@ -165,7 +180,7 @@
         grid-gap: 8px
         width: 100%
         margin-top: 20px
-        height: 100%
+        height: calc(100% - 116px)
         max-height: 100%
         overflow-y: scroll
         padding-right: 2px

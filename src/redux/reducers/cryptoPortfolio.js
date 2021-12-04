@@ -72,6 +72,29 @@ const cryptoPortfolio = (state = initialState, action) => {
                 // portfolio: [...state.portfolio.slice(0, deleteIndex), ...state.portfolio.slice(deleteIndex + 1)]
             }
         }
+        case 'UPDATE_CURRENCIES': {
+            return {
+                ...state,
+                portfolio: state.portfolio.map((item) => {
+                    let newPrice = {};
+                    
+                    action.payload.data.map((coin) => {
+                        if (item.buyName === coin.name) {
+                            return newPrice = coin;
+                        }
+                        return coin;
+                    })
+                    
+                    if (newPrice.name === item.buyName) {
+                        return {
+                            ...item,
+                            currentPrice: newPrice.price
+                        }
+                    }
+                    return item
+                })
+            }
+        }
         default:
             return state;
     }

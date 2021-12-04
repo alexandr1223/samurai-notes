@@ -31,7 +31,7 @@ export default function Coin({panelStatusFromCoin, name, image, symbol, currentP
                 ${currentPrice.toLocaleString()}
             </p>
             <p className={priceChange > 0 ? "coin__change-percent coin__change-percent_green" : "coin__change-percent coin__change-percent_red"}>
-                {priceChange.toFixed(2)}%
+                {(priceChange*100/currentPrice).toFixed(2)}%
             </p>                
             <p className="coin__market-cap">
                 Cap: ${marketCap.toLocaleString()}
