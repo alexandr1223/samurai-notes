@@ -141,6 +141,7 @@ const boards = (state = initialState, action) => {
             return {
                 ...state,
                 boardItem: state.boardItem.map((item) => {
+                    console.log(action.payload.id)
                     if (item.id === action.payload.id) {
                         let newId = item.list.map(list => {
                             return list.listId

@@ -7,9 +7,6 @@ import 'react-tabs/style/react-tabs.css';
 import './BoardMenu.sass';
 
 export default function BoardMenuTabs({backgroundChange, setOpenBackgroundChange}) {
-    useEffect(() => {
-        console.count('rend2')
-    }, [])
 
     return (
         <div className={backgroundChange ? "board-tab board-tab__open" : "board-tab"}>

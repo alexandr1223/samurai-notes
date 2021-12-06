@@ -1,6 +1,5 @@
 import {React, useState} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
-import { currentBoard} from '../../redux/action/currentBoard';
 import { boardDelete } from '../../redux/action/createBoard';
 import { Link } from 'react-router-dom';
 import deleteBtn from '../../assets/img/delete-btn.svg'
@@ -41,10 +40,6 @@ function Notes({createElement}) {
         
     }
 
-    const openBoard = (index) => {
-        dispatch(currentBoard(index));
-    }
-
     const boardDeleteSender = (boardId) => {
         dispatch(boardDelete(boardId));
     }
@@ -57,7 +52,7 @@ function Notes({createElement}) {
             <div className="notes__list">
                 {
                     board.map((item, index) => (
-                        <Link className="notes__item" key={index} to={`/notes/board/${item.id}`} onClick={() => {openBoard(index)}} >
+                        <Link className="notes__item" key={index} to={`/notes/board/${item.id}`} >
                             {
                                 item.boardImage[0].small ?
                                 <img src={item.boardImage[0].small} alt="" /> :

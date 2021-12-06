@@ -1,5 +1,6 @@
 import React, {useState} from 'react'
 import { useSelector } from 'react-redux';
+import {useParams} from "react-router-dom";
 import { MdClose } from "react-icons/md";
 import BoardMenuTabs from './BoardMenuTabs'
 import './BoardMenu.sass'
@@ -8,9 +9,15 @@ export default function BoardMenu({boardMenuStatus, setBoardMenuStatus}) {
 
     const [openBackgroundChange, setOpenBackgroundChange] = useState(false);
 
+    const slug = useParams();
     const boardItem = useSelector(({boards}) => boards.boardItem);
-    const currentBoardIndex = useSelector(({currentBoard}) => currentBoard.current);
-    const currentBoard = boardItem[currentBoardIndex];
+    let currentBoard = '';
+    boardItem.map(item => {
+        if (item.id == Number(slug.id)) {
+            return currentBoard = item
+        }
+        return currentBoard;
+    })
 
     const changeBackgroundOpen = () => {
         setOpenBackgroundChange(!openBackgroundChange);
@@ -34,15 +41,6 @@ export default function BoardMenu({boardMenuStatus, setBoardMenuStatus}) {
                     }
                     <span>Сменить фон стола</span>
                 </div>
-
-                {/* <div className="change-style" onClick={changeBackgroundOpen}>
-                    {
-                        currentBoard.boardImage[0].small === '' 
-                        ? <div className="change-style__image change-style__image_square"></div>
-                        : <img src={currentBoard.boardImage[0].small} alt="" className={"change-style__image"} />
-                    }
-                    <span>Сменить цвет карточек</span>
-                </div> */}
             </div>
             
             <BoardMenuTabs backgroundChange={openBackgroundChange} setOpenBackgroundChange={setOpenBackgroundChange} />

@@ -3,7 +3,8 @@ import {useSelector, useDispatch} from 'react-redux';
 import {useParams} from "react-router-dom";
 import styled from 'styled-components';
 import CreateNewList from './CreateNewList';
-import { cardDelete, listDelete, changeListTitle, createCard, openCardCreation, createCardInPosition } from '../../../redux/action/createBoard';
+import CreateNewCard from './CreateNewCard';
+import { cardDelete, listDelete, changeListTitle, createCardInPosition } from '../../../redux/action/createBoard';
 import deleteBtn from '../../../assets/img/delete-btn.svg'
 import BoardMenu from '../BoardMenu/BoardMenu';
 import { IoSettingsOutline } from 'react-icons/io5';
@@ -23,44 +24,26 @@ const BoardBg = styled.div`
 
 function Board({wrapRef}) {
 
-    let slug = useParams();
-
+    const slug = useParams();
     const dispatch = useDispatch();
-    
     const boardItem = useSelector(({boards}) => boards.boardItem);
-    const currentBoardIndex = useSelector(({currentBoard}) => currentBoard.current);
-    const [cardCreationValue, setCardCreationValue] = useState('');
     
     // Определение текущей доски
-    const currentBoard = boardItem[currentBoardIndex];
+    let currentBoard = '';
+    boardItem.map(item => {
+        if (item.id == Number(slug.id)) {
+            return currentBoard = item
+        }
+        return currentBoard;
+    })
     
-    // Определение текущей нажатой кнопки добавления карточки
-    const [currentAddBtn, setCurrentAddBtn] = useState('');
 
+    // Изменение заголовка списка
     const listTitleChange = (value, listIndex) => {
-        dispatch(changeListTitle(value, listIndex, boardItem[currentBoardIndex].id))
+        dispatch(changeListTitle(value, listIndex, boardItem[slug].id))
     }
 
-    const createCardOpen = (value, listIndex, currentBoardIndex, elem) => {
-        dispatch(openCardCreation(value, listIndex, currentBoardIndex));
-        setCardCreationValue('');
-        setCurrentAddBtn(elem.target);
-        elem.target.style.display = 'none';
-    }
-
-    const cardCreationValueFunc = (text) => {
-        setCardCreationValue(text)
-    }
-
-    const createCardSender = (listId, currentBoardIndex) => {
-        if (cardCreationValue.length > 0) {
-            dispatch(createCard(cardCreationValue, listId, currentBoardIndex));
-            dispatch(openCardCreation(false, listId, currentBoardIndex));
-            setCardCreationValue('')
-            currentAddBtn.style.display = 'block';
-        }         
-    }
-    
+    // Удаление списков и карточек
     const cardDeleteSender = (boardId, listId, cardId) => {
         dispatch(cardDelete(boardId, listId, cardId));
     }
@@ -125,9 +108,9 @@ function Board({wrapRef}) {
         
         if (e.target.classList.contains('board-list__card-content')) {
             const currentIndex = currentList.listItem.map(function (e) {return e.cardId}).indexOf(currentCard.cardId);
-            dispatch(cardDelete(currentBoardIndex, currentList.listId, currentIndex))
+            dispatch(cardDelete(slug, currentList.listId, currentIndex))
             let dropIndex = card.listItem.indexOf(item)
-            dispatch(createCardInPosition(currentCard.cardName, card.listId, currentBoardIndex, dropIndex));
+            dispatch(createCardInPosition(currentCard.cardName, card.listId, slug, dropIndex));
             e.target.parentElement.classList.remove('board-list__paste')
         }
     }
@@ -138,8 +121,8 @@ function Board({wrapRef}) {
         
     //     if (!e.target.classList.contains('board-list__card-content')) {
     //         const currentIndex = currentList.listItem.map(function (e) {return e.cardId}).indexOf(currentCard.cardId);
-    //         dispatch(cardDelete(currentBoardIndex, currentList.listId, currentIndex))
-    //         dispatch(createCard(currentCard.cardName, card.listId, currentBoardIndex));
+    //         dispatch(cardDelete(slug, currentList.listId, currentIndex))
+    //         dispatch(createCard(currentCard.cardName, card.listId, slug));
     //         e.target.parentElement.classList.remove('board-list__paste')
     //     }
     // }
@@ -157,7 +140,7 @@ function Board({wrapRef}) {
                 listRef.current.style.overflowX = "unset"
             }
         }, 10)
-    }, [changeBoardMenuOpen, createCardSender])
+    }, [changeBoardMenuOpen])
 
     useEffect(() => {
         boardRef.current.style.maxWidth = wrapRef.current.clientWidth - 280 + 'px';
@@ -204,7 +187,7 @@ function Board({wrapRef}) {
                                 // onDrop={(e) => dropCardHandler(e, item)}
                             >             
                                 <textarea type="text" className="board-list__search" value={item.listTitle} onChange={(e) => {listTitleChange(e.target.value, listIndex)}}  />
-                                <div className="board-list__delete-list" onClick={() => listDeleteSender(currentBoardIndex, listIndex)}>
+                                <div className="board-list__delete-list" onClick={() => listDeleteSender(slug, listIndex)}>
                                     <img src={deleteBtn} alt="" />
                                 </div>           
                                 {
@@ -219,7 +202,7 @@ function Board({wrapRef}) {
                                             <div className="board-list__card-block">
                                                 <div className="board-list__card-content">
                                                     {card.cardName}
-                                                    <div className="board-list__delete-card" onClick={() => cardDeleteSender(currentBoardIndex, listIndex, cardIndex)}>
+                                                    <div className="board-list__delete-card" onClick={() => cardDeleteSender(slug, listIndex, cardIndex)}>
                                                         <img src={deleteBtn} alt="" />
                                                     </div>
                                                 </div>
@@ -228,15 +211,7 @@ function Board({wrapRef}) {
                                         </div>
                                     ))
                                 }
-                                <div className={item.openCardCreation === true ? 'board-list__cardCreate board-list__cardCreate--active' : 'board-list__cardCreate'}>
-                                    <input type="text" className="board-list__input" value={cardCreationValue} onChange={e => cardCreationValueFunc(e.target.value)} />
-                                    <button className="board-list__cardBtn" onClick={() => createCardSender(listIndex, currentBoardIndex)}>
-                                        Создать
-                                    </button>
-                                </div>
-                                <button className="board-list__addCard" onClick={(e) => {createCardOpen(true, listIndex, currentBoardIndex, e)}}>
-                                    +
-                                </button>
+                                <CreateNewCard item={item} slug={Number(slug.id)} listIndex={listIndex} />
                             </div>
                         ))
                     }

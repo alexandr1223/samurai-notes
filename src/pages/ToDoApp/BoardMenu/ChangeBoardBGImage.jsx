@@ -1,10 +1,11 @@
-import React, {useState, useEffect} from 'react'
-import {useDispatch, useSelector} from 'react-redux'
+import React, {useState, useEffect} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
+import {useParams} from "react-router-dom";
 import { changeBoardBG } from '../../../redux/action/createBoard';
 
 export default function ChangeBoardBGImage() {
     
-    const currentBoardIndex = useSelector(({currentBoard}) => currentBoard.current);
+    const slug = useParams();
 
     const [backgrounds, setBackgrounds] = useState('');
     const [backgroundSearch, setBackgroundSearch] = useState('abstract')
@@ -26,8 +27,8 @@ export default function ChangeBoardBGImage() {
             })
     }, [backgroundSearch]);
 
-    const newBoardImage = (currentBoardIndex, regualarImage, smallImage) => {
-        dispatch(changeBoardBG(currentBoardIndex, regualarImage, smallImage, ''))
+    const newBoardImage = (slug, regualarImage, smallImage) => {
+        dispatch(changeBoardBG(slug, regualarImage, smallImage, ''))
     }
 
     const changeSearchText = (text) => {
@@ -44,7 +45,7 @@ export default function ChangeBoardBGImage() {
                 <div className="background__list">
                     { backgrounds.results ?
                         backgrounds.results.map((item, index) => (
-                            <div className="background__item" key={index} onClick={(e) => newBoardImage(currentBoardIndex, item.urls.regular, item.urls.small )}>
+                            <div className="background__item" key={index} onClick={(e) => newBoardImage(slug, item.urls.regular, item.urls.small )}>
                                 <img src={item.urls.small} alt="" />
                             </div>
                         ))
