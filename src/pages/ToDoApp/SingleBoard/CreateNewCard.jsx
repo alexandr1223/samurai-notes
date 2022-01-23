@@ -10,7 +10,6 @@ export default function CreateNewCard({item, slug, listIndex}) {
     // Определение текущей нажатой кнопки добавления карточки
     const [currentAddBtn, setCurrentAddBtn] = useState('');
 
-
     const createCardOpen = (value, listIndex, slug, elem) => {
         console.log(slug)
         dispatch(openCardCreation(true, listIndex, slug));
@@ -31,7 +30,7 @@ export default function CreateNewCard({item, slug, listIndex}) {
     const cardCreationValueFunc = (text) => {
         setCardCreationValue(text)
     }
-    console.log(item.openCardCreation)
+
     return (
         <div className="board-list__newCard">
             <div className={item.openCardCreation === true ? 'board-list__cardCreate board-list__cardCreate--active' : 'board-list__cardCreate'}>

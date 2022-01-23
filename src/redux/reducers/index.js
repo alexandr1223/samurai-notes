@@ -6,6 +6,7 @@ import cryptoPortfolio from "./cryptoPortfolio";
 import cryptoData from "./cryptoData";
 import changeSidebarCoin from "./changeCoinOnSidebar";
 import transactions from "./transactions";
+import auth from "./Auth/auth";
 
 const rootReducer = combineReducers({
     boards: boards,
@@ -14,7 +15,8 @@ const rootReducer = combineReducers({
     crypto: cryptoPortfolio,
     cryptoData: cryptoData,
     changeSidebarCoin: changeSidebarCoin,
-    transactions: transactions
+    transactions: transactions,
+    auth: auth
 });
 
 export default rootReducer;

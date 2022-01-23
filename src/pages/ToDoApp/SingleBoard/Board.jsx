@@ -133,6 +133,7 @@ function Board({wrapRef}) {
     const listRef = useRef(null);
     
     useEffect(() => {
+        console.log(wrapRef)
         setTimeout(() => {
             if (listRef.current.scrollWidth > wrapRef.current.clientWidth - 280 - 300) {
                 listRef.current.style.overflowX = "scroll"

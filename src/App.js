@@ -1,34 +1,42 @@
 import './css/style.css';
 import React, {useRef} from 'react';
-import {Sidebar} from './pages';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import { Settings, financePortfolio, Main, Notes} from './pages';
-import Board from './pages/ToDoApp/SingleBoard/Board';
+import Router from './routes/Router';
 import { useDispatch} from 'react-redux';
-import { createBoard } from './redux/action/createBoard';
+import Cookies from 'js-cookie';
+import { isLoaded } from './redux/action/Auth/auth';
+import api from './services/api'
 
 function App() {
 
     const dispatch = useDispatch();
+	// Определение наличия токена в куках
+	Cookies.get('auth-token') ? dispatch(isLoaded(true)) : dispatch(isLoaded(false))
+	
 
-	const setNewBoard = (item, id) => {
-		dispatch(createBoard(item, id))
-	}
+	// const loadData = useCallback(async () => {
+	// 	const tokenData = Cookies.get("auth-token");
+	
+	// 	try {
+	// 	  if (tokenData) {
+	// 		const { data } = await api.auth.getProfile();
+	// 		console.log(data)
+	// 	  }
+	// 	} catch {
+	// 		console.log('catch')
+	// 	} finally {
+	// 		console.log('isloaded')
+	// 	}
+	//   }, []);
+	
+	// useEffect(() => {
+	// 	loadData();
+	// }, [loadData]);
 	
 	const wrap = useRef(null);
 
   	return (
 		<div className="wrapper" ref={wrap}>
-			<BrowserRouter>
-				<Sidebar/>
-				<Switch>
-					<Route path="/home" component={Main} exact/>
-					<Route path="/notes" render={props => <Notes createElement={setNewBoard} />} exact/>
-					<Route path="/settings" component={Settings} exact/>
-					<Route path="/financePortfolio" component={financePortfolio} exact/>
-					<Route path="/notes/board/:id" render={props => <Board wrapRef={wrap} />}  exact/>
-				</Switch>
-			</BrowserRouter>
+			<Router wrapRef={wrap} />
 		</div>
   	);
 }
